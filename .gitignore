@@ -1,0 +1,6 @@
+.env
+.DS_Store
+database/*.sqlite
+database/*.sqlite-*
+api/log/
+.claude/settings.local.json
