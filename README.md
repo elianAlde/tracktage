@@ -17,10 +17,10 @@ ETFs, stocks, crypto, bank accounts, emergency fund, cars, real estate and debts
 </div>
 
 <p align="center">
-  <img src="docs/screenshots/dashboard.jpg" alt="Dashboard" width="200">
-  <img src="docs/screenshots/andamento.jpg" alt="Net worth over time" width="200">
-  <img src="docs/screenshots/etf-dark.jpg" alt="ETF section in dark mode" width="200">
-  <img src="docs/screenshots/dashboard-dark.jpg" alt="Dashboard in dark mode" width="200">
+  <img src="assets/screenshots/dashboard.jpg" alt="Dashboard" width="200">
+  <img src="assets/screenshots/andamento.jpg" alt="Net worth over time" width="200">
+  <img src="assets/screenshots/etf-dark.jpg" alt="ETF section in dark mode" width="200">
+  <img src="assets/screenshots/dashboard-dark.jpg" alt="Dashboard in dark mode" width="200">
 </p>
 
 > **Note:** the user interface is in Italian 🇮🇹
@@ -155,7 +155,7 @@ server {
     index index.php;
 
     # Folders and files that must never be served
-    location ~ ^/(database|bin|config|middleware|components|views|docs|api/(utils|services|log))/ { deny all; }
+    location ~ ^/(database|bin|config|middleware|components|views|api/(utils|services|log))/ { deny all; }
     location ~ /\.(?!well-known) { deny all; }
     location ~ \.(sqlite|sqlite3|sql|md)$ { deny all; }
 
@@ -213,11 +213,11 @@ CSV files use `;` as separator and a decimal comma, so they open correctly in Ex
 │   ├── endpoint/      # One file per action: auth, assets, categories, market, portfolio, backup
 │   ├── services/      # PriceService (quotes and FX rates) · Portfolio (valuation and snapshots)
 │   └── utils/         # SQLite connection, auth/CSRF, JSON responses, CSV, logger
+├── assets/            # App icons and README screenshots
 ├── bin/               # create-user.php (CLI)
 ├── components/        # Head, top bar and bottom navigation
 ├── config/            # .env loader and configuration
 ├── database/          # schema.sql (+ the .sqlite file, ignored by git)
-├── docs/              # README screenshots
 ├── script/            # Per-page JavaScript + app.js (shared helpers)
 ├── style/             # CSS with variables for light and dark themes
 ├── views/             # login · dashboard · category · statistics · settings
