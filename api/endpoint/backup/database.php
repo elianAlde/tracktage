@@ -2,13 +2,13 @@
 require_once __DIR__ . '/../../utils/bootstrap.php';
 requireAuth();
 
-// Copia consistente del database (include le modifiche ancora nel file WAL)
+// VACUUM INTO produces a consistent copy, including changes still in the WAL file
 $tmp = tempnam(sys_get_temp_dir(), 'tracktage_');
 unlink($tmp);
 $db = Connection::get();
 $db->prepare("VACUUM INTO ?")->execute([$tmp]);
 
-// Nel backup non servono i tentativi di login
+// Login attempts are transient state, not worth backing up
 $copy = new PDO('sqlite:' . $tmp);
 $copy->exec("DELETE FROM login_attempts");
 $copy = null;

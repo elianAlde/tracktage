@@ -1,12 +1,12 @@
 <?php
 /**
- * Traduzioni italiane. I segnaposto {nome} vengono sostituiti da t().
- * Alcune stringhe contengono HTML voluto (<strong>, <br>).
+ * Italian strings (also the fallback for missing keys in other languages).
+ * {placeholders} are replaced by t(); some values intentionally contain HTML (<strong>, <br>).
  */
 return [
     'lang.name' => 'Italiano',
 
-    /* Navigazione */
+    /* Navigation */
     'nav.networth' => 'Patrimonio',
     'nav.history'  => 'Andamento',
     'nav.settings' => 'Impostazioni',
@@ -14,7 +14,7 @@ return [
     'top.refresh'  => 'Aggiorna quotazioni',
     'top.add'      => 'Aggiungi',
 
-    /* Comuni */
+    /* Common */
     'common.close'    => 'Chiudi',
     'common.save'     => 'Salva',
     'common.delete'   => 'Elimina',
@@ -51,7 +51,7 @@ return [
     'dash.last_30d'    => 'ultimi 30 giorni',
     'dash.since'       => 'dal {date}',
 
-    /* Sezione */
+    /* Section */
     'cat.total_value'       => 'Valore totale',
     'cat.total_liabilities' => 'Totale passività',
     'cat.add'               => 'Aggiungi',
@@ -81,7 +81,7 @@ return [
     'cat.deleted'           => 'Eliminato',
     'cat.confirm_delete'    => 'Eliminare questa voce?',
 
-    /* Andamento */
+    /* History */
     'stats.1m'  => '1M',
     'stats.3m'  => '3M',
     'stats.1y'  => '1A',
@@ -91,7 +91,7 @@ return [
     'stats.by_section' => 'Per sezione',
     'stats.footer'     => "Ogni giorno in cui apri l'app viene salvata una fotografia del patrimonio: il grafico si arricchisce con l'uso.",
 
-    /* Impostazioni */
+    /* Settings */
     'set.sections'        => 'Sezioni del patrimonio',
     'set.new'             => 'Nuova',
     'set.appearance'      => 'Aspetto',
@@ -141,7 +141,7 @@ return [
     'set.install_safari'   => 'Funziona solo da Safari',
     'set.install_unavailable' => 'Installazione non disponibile da questo browser.',
 
-    /* Icone delle sezioni */
+    /* Section icons */
     'icon.bi-graph-up-arrow'   => 'Grafico',
     'icon.bi-currency-bitcoin' => 'Crypto',
     'icon.bi-wallet2'          => 'Portafoglio',
@@ -161,7 +161,7 @@ return [
     'icon.bi-box-seam'         => 'Oggetti',
     'icon.bi-laptop'           => 'Elettronica',
 
-    /* Sezioni create al primo avvio */
+    /* Sections created on first run */
     'seed.etf'        => 'ETF e Azioni',
     'seed.crypto'     => 'Crypto',
     'seed.cash'       => 'Liquidità',
@@ -170,7 +170,7 @@ return [
     'seed.realestate' => 'Immobili',
     'seed.debts'      => 'Debiti',
 
-    /* Messaggi API */
+    /* API messages */
     'api.unauthorized'     => 'Non autorizzato',
     'api.csrf'             => 'Token di sicurezza non valido, ricarica la pagina',
     'api.method'           => 'Metodo non consentito',

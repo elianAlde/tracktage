@@ -1,27 +1,27 @@
 body { padding: 0; background: var(--bs-body-bg); }
 
 .login-container {
-	max-width: 400px;
-	margin: 10vh auto;
-	padding: 2rem;
+    max-width: 400px;
+    margin: 10vh auto;
+    padding: 2rem;
 }
 
 .login-logo {
-	width: 84px;
-	height: 84px;
-	border-radius: 20px;
-	background: #16181d;
-	color: #fff;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    width: 84px;
+    height: 84px;
+    border-radius: 20px;
+    background: #16181d;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .login-logo i { font-size: 42px; }
 
 .form-control:focus {
-	box-shadow: none;
-	border-color: #0d6efd;
+    box-shadow: none;
+    border-color: #0d6efd;
 }
 
-/* In tema scuro il logo diventa chiaro, come la favicon */
+/* Inverted logo in dark mode, matching the favicon */
 [data-bs-theme="dark"] .login-logo { background: #eceef1; color: #16181d; }

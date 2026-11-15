@@ -23,7 +23,7 @@ $s = $db->prepare("SELECT * FROM users WHERE email = ?");
 $s->execute([$email]);
 $user = $s->fetch();
 
-// password_verify anche se l'utente non esiste, per non rivelarlo dai tempi di risposta
+// Always run password_verify, even for unknown emails, so response times don't reveal which accounts exist
 $hash = $user['password'] ?? '$2y$12$invalidinvalidinvalidinvalidinvalidinvalidinvalidinvali';
 if (!password_verify($password, $hash) || !$user) {
     $db->prepare("INSERT INTO login_attempts (ip, attempted_at) VALUES (?, ?)")->execute([$ip, time()]);

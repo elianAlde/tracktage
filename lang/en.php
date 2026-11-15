@@ -1,7 +1,6 @@
 <?php
 /**
- * English translations. {placeholders} are replaced by t().
- * Some strings intentionally contain HTML (<strong>, <br>).
+ * English strings. {placeholders} are replaced by t(); some values intentionally contain HTML.
  */
 return [
     'lang.name' => 'English',

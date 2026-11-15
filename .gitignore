@@ -1,10 +1,9 @@
-# ─── Configurazione e segreti ───────────────────────────────
+# Configuration and secrets
 .env
 .env.*
 !.env.example
 
-# ─── Dati personali ─────────────────────────────────────────
-# Database SQLite (+ file WAL/SHM) e qualsiasi copia di backup
+# Personal data: SQLite database (+ WAL/SHM files) and any backup copy
 database/*.sqlite
 database/*.sqlite-*
 *.sqlite
@@ -16,15 +15,15 @@ database/*.sqlite-*
 *.bak
 /backup/
 /backups/
-# Export scaricati dall'app
+# Exports downloaded from the app
 tracktage-*.csv
 tracktage-backup-*.sqlite
 
-# ─── Log ────────────────────────────────────────────────────
+# Logs
 api/log/
 *.log
 
-# ─── Strumenti locali ───────────────────────────────────────
+# Local tooling
 .claude/
 .idea/
 .vscode/
@@ -34,7 +33,7 @@ api/log/
 vendor/
 node_modules/
 
-# ─── File di sistema ────────────────────────────────────────
+# OS files
 .DS_Store
 ._*
 .Spotlight-V100

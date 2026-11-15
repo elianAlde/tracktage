@@ -1,7 +1,7 @@
 <?php
 /**
- * CSV compatibile con Excel: in italiano separatore ";" e virgola decimale,
- * in inglese separatore "," e punto decimale. BOM UTF-8 in entrambi i casi.
+ * Excel-friendly CSV export: ";" and decimal comma in Italian, "," and decimal point in English.
+ * A UTF-8 BOM is always written so Excel detects the encoding.
  */
 class Csv {
     public static function download(string $filename, array $header, iterable $rows): never {
@@ -28,7 +28,7 @@ class Csv {
             return LANG === 'it' ? str_replace('.', ',', $n) : $n;
         }
         $v = (string)$v;
-        // Evita che Excel interpreti il testo come formula
+        // Prevent spreadsheet formula injection
         return preg_match('/^[=+\-@\t\r]/', $v) ? "'" . $v : $v;
     }
 }

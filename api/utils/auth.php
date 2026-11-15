@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/response.php';
 
-/** Blocca le richieste non autenticate e, per i POST, quelle senza token CSRF valido. */
+/** Rejects unauthenticated requests and, for POST, requests without a valid CSRF token. */
 function requireAuth(): void {
     if (empty($_SESSION['id'])) {
         Response::error(t('api.unauthorized'), 401);

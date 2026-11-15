@@ -1,17 +1,15 @@
 Options -Indexes
 RewriteEngine On
 
-# File sensibili mai serviti
-<FilesMatch "^(\.env.*|.*\.sqlite.*|.*\.sql|README\.md|\.gitignore)$">
+# Never serve secrets, data or internal folders
+<FilesMatch "^(\.env.*|.*\.sqlite.*|.*\.sql|README\.md|\.gitignore|\.editorconfig)$">
     Require all denied
 </FilesMatch>
 RewriteRule ^(database|bin|config|lang|middleware|components|views)/ - [F,L]
 
-# Se esiste un file o directory, non riscrivere
+# Serve existing files as they are; everything else goes through the router, which checks the login
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Tutte le pagine passano dal router (che controlla il login)
 RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?page=$1 [QSA,L]
 
 DirectoryIndex index.php

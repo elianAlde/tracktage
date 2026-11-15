@@ -1,47 +1,66 @@
 <?php
 /**
- * Crea l'utente (o reimposta la password se l'email esiste già).
- * Uso: php bin/create-user.php email@esempio.it "Nome" "Cognome"
- * La password viene chiesta in modo nascosto (o letta da stdin se non c'è un terminale).
+ * Creates the user, or resets the password if the email already exists.
+ *
+ *   php bin/create-user.php you@example.com "First" "Last"
+ *
+ * The password is prompted without echo, or read from stdin when not running in a terminal.
  */
-if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
+if (PHP_SAPI !== 'cli') {
+    http_response_code(404);
+    exit;
+}
 
 require_once __DIR__ . '/../api/utils/connection.php';
 
-[$_, $email, $first, $last] = array_pad($argv, 4, '');
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    fwrite(STDERR, "Uso: php bin/create-user.php email \"Nome\" [\"Cognome\"]\n");
+const MIN_PASSWORD_LENGTH = 10;
+
+function fail(string $message): never {
+    fwrite(STDERR, $message . "\n");
     exit(1);
 }
 
-$tty = function_exists('posix_isatty') ? posix_isatty(STDIN) : true;
-if ($tty) {
-    echo "Password (min 10 caratteri): ";
+function promptHidden(string $label): string {
+    echo $label;
     system('stty -echo');
-    $password = trim(fgets(STDIN));
-    system('stty echo');
-    echo "\nRipeti password: ";
-    system('stty -echo');
-    $confirm = trim(fgets(STDIN));
+    $value = trim((string)fgets(STDIN));
     system('stty echo');
     echo "\n";
-    if ($password !== $confirm) { fwrite(STDERR, "Le password non coincidono\n"); exit(1); }
-} else {
-    $password = trim(fgets(STDIN));
+    return $value;
 }
 
-if (strlen($password) < 10) { fwrite(STDERR, "Password troppo corta (min 10 caratteri)\n"); exit(1); }
+[, $email, $firstName, $lastName] = array_pad($argv, 4, '');
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    fail('Usage: php bin/create-user.php email "First name" ["Last name"]');
+}
+
+$interactive = function_exists('posix_isatty') ? posix_isatty(STDIN) : true;
+if ($interactive) {
+    $password = promptHidden('Password (min ' . MIN_PASSWORD_LENGTH . ' characters): ');
+    if ($password !== promptHidden('Repeat password: ')) {
+        fail('Passwords do not match');
+    }
+} else {
+    $password = trim((string)fgets(STDIN));
+}
+
+if (strlen($password) < MIN_PASSWORD_LENGTH) {
+    fail('Password too short (min ' . MIN_PASSWORD_LENGTH . ' characters)');
+}
 
 $db = Connection::get();
 $hash = password_hash($password, PASSWORD_DEFAULT);
-$s = $db->prepare("SELECT id FROM users WHERE email = ?");
-$s->execute([$email]);
 
-if ($id = $s->fetchColumn()) {
-    $db->prepare("UPDATE users SET password = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?")->execute([$hash, $id]);
-    echo "Password aggiornata per $email\n";
+$stmt = $db->prepare("SELECT id FROM users WHERE email = ?");
+$stmt->execute([$email]);
+$userId = $stmt->fetchColumn();
+
+if ($userId) {
+    $db->prepare("UPDATE users SET password = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?")
+       ->execute([$hash, $userId]);
+    echo "Password updated for $email\n";
 } else {
     $db->prepare("INSERT INTO users (email, first_name, last_name, password) VALUES (?, ?, ?, ?)")
-       ->execute([$email, $first ?: 'Utente', $last, $hash]);
-    echo "Utente $email creato\n";
+       ->execute([$email, $firstName ?: 'User', $lastName, $hash]);
+    echo "User $email created\n";
 }

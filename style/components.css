@@ -3,7 +3,7 @@
     --bottom-h: 64px;
 }
 
-/* Colori dipendenti dal tema (data-bs-theme su <html>) */
+/* Theme-dependent colors (data-bs-theme on <html>) */
 [data-bs-theme="light"] {
     --app-bg: #f5f6f8;
     --app-surface: #ffffff;
@@ -31,7 +31,7 @@
 [data-bs-theme="dark"] .list-group-item { background-color: var(--app-surface); }
 [data-bs-theme="dark"] .form-control,
 [data-bs-theme="dark"] .form-select { background-color: var(--bs-tertiary-bg); }
-/* Guadagni e perdite: in tema scuro i verdi/rossi di Bootstrap sono poco leggibili */
+/* Gains and losses: Bootstrap's green/red have poor contrast on dark backgrounds */
 .text-success { color: var(--app-up) !important; }
 .text-danger { color: var(--app-down) !important; }
 
@@ -90,7 +90,7 @@ body {
 
 .card { border: 0; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
 
-/* Testata patrimonio netto: card neutra come le altre, il numero è il protagonista */
+/* Net worth header */
 .nw-hero { padding: 1rem 1rem 1.25rem; }
 .nw-label { font-size: .85rem; color: var(--bs-secondary-color); }
 .nw-amount {
@@ -107,7 +107,7 @@ body {
 .nw-split span { display: block; color: var(--bs-secondary-color); }
 .nw-split strong { font-size: 1rem; font-weight: 600; }
 
-/* Avviso discreto: superficie neutra, solo l'icona colorata */
+/* Low-key notice: neutral surface, only the icon is colored */
 .notice {
     display: flex;
     align-items: center;
@@ -122,7 +122,7 @@ body {
 .notice i { font-size: 18px; color: var(--bs-warning); }
 [data-bs-theme="dark"] .notice { box-shadow: none; }
 
-/* Legenda dell'allocazione: una riga per sezione con la percentuale */
+/* Allocation legend: one row per section with its share */
 .alloc-legend { list-style: none; padding: 0; margin: 1rem 0 0; }
 .alloc-legend li {
     display: flex;
@@ -136,7 +136,7 @@ body {
 .alloc-legend .name { flex-grow: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .alloc-legend .pct { font-weight: 600; font-variant-numeric: tabular-nums; }
 
-/* Numeri allineati in colonna */
+/* Keep digits aligned in columns */
 .amount-sm, .nw-amount, .nw-split strong, #categoryTotal { font-variant-numeric: tabular-nums; }
 
 .cat-icon {

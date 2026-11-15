@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../utils/connection.php';
 require_once __DIR__ . '/PriceService.php';
 
-/** Calcola il valore di asset, sezioni e patrimonio netto. */
+/** Values holdings, sections and the overall net worth. */
 class Portfolio {
     private PDO $db;
     private PriceService $prices;
@@ -22,7 +22,7 @@ class Portfolio {
         return $s->fetch() ?: null;
     }
 
-    /** Asset di una sezione, già valorizzati. */
+    /** Holdings of a section, with their current value. */
     public function assets(int $categoryId, bool $forceRefresh = false): array {
         $category = $this->category($categoryId);
         if (!$category) return [];
@@ -58,7 +58,7 @@ class Portfolio {
             }
         } else {
             $asset['current_value'] = (float)($asset['value'] ?? 0);
-            // I valori manuali non si aggiornano da soli: segnala quelli vecchi
+            // Manual values never update themselves, so flag the ones nobody has touched in a while
             $updated = new DateTimeImmutable($asset['updated_at'], new DateTimeZone('UTC'));
             $diff = $updated->diff(new DateTimeImmutable('now', new DateTimeZone('UTC')));
             $asset['months_since_update'] = $diff->y * 12 + $diff->m;
@@ -67,7 +67,7 @@ class Portfolio {
         return $asset;
     }
 
-    /** Totali per sezione + patrimonio netto. Salva lo snapshot del giorno. */
+    /** Totals per section and net worth. Also stores today's snapshot for the history chart. */
     public function summary(bool $forceRefresh = false): array {
         $categories = [];
         $totalAssets = 0.0;

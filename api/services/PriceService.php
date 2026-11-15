@@ -3,8 +3,8 @@ require_once __DIR__ . '/../utils/connection.php';
 require_once __DIR__ . '/../utils/logger.php';
 
 /**
- * Quotazioni da Yahoo Finance (nessuna API key necessaria), con cache su SQLite.
- * Ticker di esempio: VWCE.DE (Xetra), SWDA.MI (Borsa Italiana), AAPL, BTC-EUR.
+ * Market prices from Yahoo Finance (no API key needed), cached in SQLite.
+ * Example tickers: VWCE.DE (Xetra), SWDA.MI (Borsa Italiana), AAPL, BTC-EUR.
  */
 class PriceService {
     private const UA = 'Mozilla/5.0 (compatible; Tracktage/1.0)';
@@ -13,9 +13,9 @@ class PriceService {
     public function __construct() { $this->db = Connection::get(); }
 
     /**
-     * Ritorna ['symbol','name','price','currency','change_pct','fetched_at','price_base','stale'].
-     * price_base è il prezzo convertito in BASE_CURRENCY. Ritorna null se il ticker non esiste
-     * e non c'è nulla in cache.
+     * Returns ['symbol','name','price','currency','change_pct','fetched_at','price_base','stale'],
+     * where price_base is the price converted to BASE_CURRENCY.
+     * Falls back to the cached quote when Yahoo is unreachable; null if nothing is known.
      */
     public function quote(string $symbol, bool $force = false): ?array {
         $symbol = strtoupper(trim($symbol));
@@ -31,7 +31,7 @@ class PriceService {
         return $quote;
     }
 
-    /** Tasso per convertire 1 unità di $currency in BASE_CURRENCY. */
+    /** Exchange rate from $currency to BASE_CURRENCY. */
     public function fxRate(string $currency, bool $force = false): ?float {
         $currency = strtoupper($currency);
         if ($currency === BASE_CURRENCY) return 1.0;
@@ -39,7 +39,7 @@ class PriceService {
         return $fx ? (float)$fx['price'] : null;
     }
 
-    /** Ricerca per nome, ticker o ISIN. */
+    /** Search instruments by name, ticker or ISIN. */
     public function search(string $query): array {
         $url = 'https://query2.finance.yahoo.com/v1/finance/search?' . http_build_query([
             'q' => $query, 'quotesCount' => 10, 'newsCount' => 0, 'listsCount' => 0,
@@ -82,7 +82,7 @@ class PriceService {
 
         $price = (float)$meta['regularMarketPrice'];
         $currency = $meta['currency'] ?? BASE_CURRENCY;
-        // Le borse UK quotano in pence (GBp / GBX)
+        // London-listed instruments are quoted in pence (GBp / GBX)
         if ($currency === 'GBp' || $currency === 'GBX') {
             $price /= 100;
             $currency = 'GBP';
@@ -121,7 +121,7 @@ class PriceService {
         $err = curl_error($ch);
 
         if ($body === false || $code >= 400) {
-            if ($code === 404) return json_decode((string)$body, true) ?: null; // ticker inesistente
+            if ($code === 404) return json_decode((string)$body, true) ?: null; // unknown ticker
             Logger::error("Price API error", ['url' => $url, 'code' => $code, 'error' => $err]);
             return null;
         }

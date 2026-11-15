@@ -1,7 +1,7 @@
 <?php
 /**
- * Multilingua: la lingua si sceglie da Impostazioni ed è salvata nel cookie LANG_COOKIE
- * (per dispositivo). Senza cookie si usa DEFAULT_LANG del .env.
+ * Translations. The language is chosen per device in Settings and stored in the LANG_COOKIE
+ * cookie; without it, DEFAULT_LANG from .env is used. Strings live in lang/<code>.php.
  */
 
 const LANGS = ['it' => 'it-IT', 'en' => 'en-GB'];
@@ -18,7 +18,7 @@ if (!isset(LANGS[$lang])) {
 define('LANG', $lang);
 define('LOCALE', LANGS[$lang]);
 
-/** Tutte le stringhe della lingua corrente (con fallback sull'italiano). */
+/** All strings of the current language; missing keys fall back to Italian. */
 function translations(): array {
     static $strings = null;
     if ($strings === null) {
@@ -28,7 +28,7 @@ function translations(): array {
     return $strings;
 }
 
-/** Traduce una chiave sostituendo i segnaposto {nome}. */
+/** Translates a key, replacing {placeholders} with $params. */
 function t(string $key, array $params = []): string {
     $s = translations()[$key] ?? $key;
     foreach ($params as $k => $v) {
@@ -37,7 +37,7 @@ function t(string $key, array $params = []): string {
     return $s;
 }
 
-/** Come t() ma con escape HTML, per attributi e testo semplice. */
+/** Like t(), HTML-escaped: use it for attributes and plain text. */
 function te(string $key, array $params = []): string {
     return htmlspecialchars(t($key, $params), ENT_QUOTES);
 }

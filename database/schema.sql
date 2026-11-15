@@ -17,10 +17,10 @@ CREATE TABLE IF NOT EXISTS login_attempts (
 );
 CREATE INDEX IF NOT EXISTS login_attempts_ip_idx ON login_attempts (ip, attempted_at);
 
--- Sezioni del patrimonio.
--- kind = 'market' -> asset con ticker e quantità, valore da quotazione live
--- kind = 'manual' -> asset con valore inserito a mano (liquidità, veicoli...)
--- is_liability = 1 -> la sezione viene sottratta (mutuo, finanziamenti...)
+-- Net worth sections.
+-- kind = 'market'   -> holdings have a ticker and a quantity, valued at the live price
+-- kind = 'manual'   -> holdings have a value entered by hand (cash, vehicles...)
+-- is_liability = 1  -> the section is subtracted from net worth (mortgage, loans...)
 CREATE TABLE IF NOT EXISTS categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -38,15 +38,15 @@ CREATE TABLE IF NOT EXISTS assets (
     name TEXT NOT NULL,
     ticker TEXT NULL,
     quantity REAL NULL,
-    avg_cost REAL NULL,          -- prezzo medio di carico per quota (valuta base)
-    value REAL NULL,             -- valore manuale (valuta base)
+    avg_cost REAL NULL,          -- average cost per share (base currency)
+    value REAL NULL,             -- manual value (base currency)
     notes TEXT NULL,
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS assets_category_idx ON assets (category_id);
 
--- Cache delle quotazioni (anche tassi di cambio, es. USDEUR=X)
+-- Price cache, including FX rates (e.g. USDEUR=X)
 CREATE TABLE IF NOT EXISTS prices (
     symbol TEXT PRIMARY KEY,
     name TEXT NULL,
@@ -56,13 +56,13 @@ CREATE TABLE IF NOT EXISTS prices (
     fetched_at INTEGER NOT NULL
 );
 
--- Una fotografia al giorno del patrimonio, per il grafico storico
+-- One net worth snapshot per day, for the history chart
 CREATE TABLE IF NOT EXISTS snapshots (
     snapshot_date TEXT PRIMARY KEY,
     total_assets REAL NOT NULL,
     total_liabilities REAL NOT NULL,
     net_worth REAL NOT NULL,
-    breakdown TEXT NOT NULL      -- JSON {category_id: valore}
+    breakdown TEXT NOT NULL      -- JSON {category_id: value}
 );
 
--- Le sezioni di default vengono create da Connection::seed() nella lingua scelta
+-- Default sections are created by Connection::seed() in the configured language
