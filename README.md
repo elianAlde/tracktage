@@ -4,71 +4,74 @@
 
 # Tracktage
 
-**Il tuo patrimonio, tutto in un posto.**
-ETF, azioni, crypto, conti, fondo emergenza, auto, immobili e debiti in un'unica web app, con le quotazioni aggiornate in automatico.
+**Your net worth, all in one place.**
+ETFs, stocks, crypto, bank accounts, emergency fund, cars, real estate and debts in a single web app, with prices updated automatically.
 
 ![PHP](https://img.shields.io/badge/PHP-8.1%2B-777BB4?logo=php&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-zero%20config-003B57?logo=sqlite&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?logo=bootstrap&logoColor=white)
-![PWA](https://img.shields.io/badge/PWA-installabile-5A0FC8?logo=pwa&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?logo=pwa&logoColor=white)
 ![Self-hosted](https://img.shields.io/badge/self--hosted-single%20user-0d6efd)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
 </div>
 
 <p align="center">
   <img src="docs/screenshots/dashboard.jpg" alt="Dashboard" width="200">
-  <img src="docs/screenshots/andamento.jpg" alt="Andamento nel tempo" width="200">
-  <img src="docs/screenshots/etf-dark.jpg" alt="Sezione ETF in tema scuro" width="200">
-  <img src="docs/screenshots/dashboard-dark.jpg" alt="Dashboard in tema scuro" width="200">
+  <img src="docs/screenshots/andamento.jpg" alt="Net worth over time" width="200">
+  <img src="docs/screenshots/etf-dark.jpg" alt="ETF section in dark mode" width="200">
+  <img src="docs/screenshots/dashboard-dark.jpg" alt="Dashboard in dark mode" width="200">
 </p>
+
+> **Note:** the user interface is in Italian 🇮🇹
 
 ---
 
-## Perché
+## Why
 
-I fogli di calcolo per il patrimonio diventano ingestibili: prezzi da aggiornare a mano, formule che si
-rompono, nessuno storico. Tracktage è una web app **self-hosted e personale** che si installa sul telefono
-come un'app. I prezzi degli ETF si aggiornano da soli e ogni giorno salva una fotografia del tuo
-patrimonio netto, così vedi davvero come cresce nel tempo.
+Net worth spreadsheets get out of hand: prices to update by hand, formulas that break, no history.
+Tracktage is a **self-hosted, personal** web app that installs on your phone like a native app.
+ETF prices update on their own, and every day it saves a snapshot of your net worth, so you can
+actually see how it grows over time.
 
-Niente cloud di terzi, niente abbonamenti, nessun dato condiviso: un file PHP e un file SQLite, sul tuo server.
+No third-party cloud, no subscriptions, no data sharing: just PHP and a SQLite file, on your own server.
 
-## Funzionalità
+## Features
 
-- 📈 **Quotazioni live** di ETF, azioni e crypto da Yahoo Finance, senza API key, con cache e conversione automatica in euro
-- 🔎 **Ricerca strumenti** per ticker, nome o ISIN (`IE00BK5BQT80` → `VWCE.DE`)
-- 💰 **Guadagno/perdita** sul prezzo medio di carico, per voce e per sezione
-- 🗂️ **Sezioni personalizzabili**, ognuna con valore *di mercato* (ticker × quote) o *manuale* (auto, conti, immobili…), icona e colore
-- ➖ **Passività**: mutui e finanziamenti si sottraggono dal patrimonio netto
-- 📊 **Storico** del patrimonio netto e dell'andamento di ogni sezione (1M, 3M, 1A, 5A, tutto)
-- ⏰ **Promemoria** per i valori manuali fermi da troppo tempo (default 6 mesi)
-- 🌙 **Tema chiaro, scuro o automatico**
-- 💾 **Backup in un tap**: CSV delle voci, CSV dello storico (pronti per Excel) o il database completo
-- 📱 **PWA mobile-first**, installabile sulla schermata Home di iOS e Android
-- 🔒 **Accesso riservato a un solo utente**, senza registrazione pubblica (vedi [Sicurezza](#-sicurezza))
+- 📈 **Live prices** for ETFs, stocks and crypto from Yahoo Finance, with no API key, caching and automatic conversion to your base currency
+- 🔎 **Instrument search** by ticker, name or ISIN (`IE00BK5BQT80` → `VWCE.DE`)
+- 💰 **Gain/loss** against your average cost, per holding and per section
+- 🗂️ **Custom sections**, each either *market-priced* (ticker × shares) or *manual* (cars, accounts, property…), with their own icon and color
+- ➖ **Liabilities**: mortgages and loans are subtracted from your net worth
+- 📊 **History** of your net worth and of each section (1M, 3M, 1Y, 5Y, all time)
+- ⏰ **Reminders** for manual values that haven't been updated in a while (6 months by default)
+- 🌙 **Light, dark or automatic theme**
+- 💾 **One-tap backups**: CSV of your holdings, CSV of your history (Excel-ready) or the full database
+- 📱 **Mobile-first PWA**, installable on the iOS and Android home screen
+- 🔒 **Single-user access**, with no public sign-up (see [Security](#-security))
 
 ## Stack
 
 | | |
 |---|---|
-| **Backend** | PHP 8.1+ vanilla, nessun framework, nessun Composer |
-| **Database** | SQLite (WAL), creato e migrato in automatico al primo avvio |
+| **Backend** | Vanilla PHP 8.1+, no framework, no Composer |
+| **Database** | SQLite (WAL), created and migrated automatically on first run |
 | **Frontend** | jQuery 3.7, Bootstrap 5.3, Bootstrap Icons, Chart.js 4 |
-| **Prezzi** | Yahoo Finance (chart + search API), con cache su DB |
+| **Prices** | Yahoo Finance (chart + search API), cached in the database |
 
-Le librerie frontend sono incluse in `vendors/`. Chart.js viene caricato da jsDelivr con una versione fissa.
+Frontend libraries are bundled in `vendors/`. Chart.js is loaded from jsDelivr with a pinned version.
 
-## Avvio rapido
+## Quick start
 
-**Requisiti:** PHP 8.1+ con le estensioni `pdo_sqlite` e `curl`.
+**Requirements:** PHP 8.1+ with the `pdo_sqlite` and `curl` extensions.
 
 ```bash
-git clone https://github.com/<tuo-utente>/tracktage.git
+git clone https://github.com/<your-username>/tracktage.git
 cd tracktage
 cp .env.example .env
 ```
 
-Per lo sviluppo locale imposta nel `.env`:
+For local development, set these in `.env`:
 
 ```env
 BASE_URL=http://localhost:8000/
@@ -76,82 +79,82 @@ SESSION_SECURE=false
 APP_DEBUG=true
 ```
 
-Crea il tuo utente (la password viene chiesta in modo nascosto):
+Create your user (you'll be prompted for the password, which is hidden as you type):
 
 ```bash
-php bin/create-user.php tu@esempio.it "Nome" "Cognome"
+php bin/create-user.php you@example.com "First" "Last"
 ```
 
-Avvia il server:
+Start the server:
 
 ```bash
 php -S localhost:8000 index.php
 ```
 
-Apri <http://localhost:8000>: al primo accesso trovi già le sezioni di default, pronte da riempire.
+Open <http://localhost:8000>: on first login the default sections are already there, ready to fill in.
 
-> Lo stesso comando `create-user.php` serve anche per **reimpostare la password** di un utente esistente.
+> The same `create-user.php` command also **resets the password** of an existing user.
 
-## Configurazione
+## Configuration
 
-Tutto si configura nel file `.env`:
+Everything is configured in the `.env` file:
 
-| Variabile | Default | Descrizione |
+| Variable | Default | Description |
 |---|---|---|
-| `BASE_URL` | `http://localhost:8000/` | URL pubblico dell'app, **con lo slash finale** |
-| `SESSION_NAME` | `tracktage_session` | Nome del cookie di sessione |
-| `DB_PATH` | `database/tracktage.sqlite` | Percorso del database, relativo alla root o assoluto |
-| `BASE_CURRENCY` | `EUR` | Valuta in cui viene espresso tutto il patrimonio |
-| `PRICE_CACHE_MINUTES` | `15` | Durata della cache delle quotazioni |
-| `STALE_MONTHS` | `6` | Mesi dopo i quali un valore manuale viene segnalato |
-| `SESSION_SECURE` | `true` | Cookie solo su HTTPS. Mettilo a `false` solo in locale |
-| `APP_DEBUG` | `false` | Mostra i dettagli degli errori. Mai `true` in produzione |
+| `BASE_URL` | `http://localhost:8000/` | Public URL of the app, **with the trailing slash** |
+| `SESSION_NAME` | `tracktage_session` | Session cookie name |
+| `DB_PATH` | `database/tracktage.sqlite` | Database path, relative to the project root or absolute |
+| `BASE_CURRENCY` | `EUR` | Currency your whole net worth is expressed in |
+| `PRICE_CACHE_MINUTES` | `15` | How long price quotes are cached |
+| `STALE_MONTHS` | `6` | Months after which a manual value is flagged as outdated |
+| `SESSION_SECURE` | `true` | Send the cookie over HTTPS only. Set to `false` only locally |
+| `APP_DEBUG` | `false` | Show error details. Never `true` in production |
 
-Le variabili d'ambiente già impostate hanno la precedenza sul `.env`, utile per test o container:
+Environment variables that are already set take precedence over `.env`, which is handy for tests or containers:
 
 ```bash
 DB_PATH=/tmp/demo.sqlite php -S localhost:8001 index.php
 ```
 
-## Ticker supportati
+## Supported tickers
 
-Si usa il formato Yahoo Finance, con il suffisso della borsa. Nel form puoi anche cercare per nome o ISIN.
+Tickers use the Yahoo Finance format, with the exchange suffix. In the form you can also search by name or ISIN.
 
-| Mercato | Esempio |
+| Market | Example |
 |---|---|
-| Borsa Italiana | `SWDA.MI`, `CSSPX.MI` |
+| Borsa Italiana (Milan) | `SWDA.MI`, `CSSPX.MI` |
 | Xetra | `VWCE.DE`, `EUNL.DE` |
 | Euronext Amsterdam | `IWDA.AS` |
-| London Stock Exchange | `VWRA.L` (le quotazioni in pence vengono convertite) |
-| USA | `AAPL`, `MSFT`, `VOO` |
+| London Stock Exchange | `VWRA.L` (prices quoted in pence are converted) |
+| US | `AAPL`, `MSFT`, `VOO` |
 | Crypto | `BTC-EUR`, `ETH-EUR` |
 
-I prezzi in valute diverse da `BASE_CURRENCY` vengono convertiti con il tasso di cambio corrente.
+Prices in currencies other than `BASE_CURRENCY` are converted at the current exchange rate.
 
-## Deploy in produzione
+## Production deployment
 
-1. Carica il progetto sul server, **senza** `.env` e `database/` locali (sono già nel `.gitignore`).
-2. Crea il `.env` con `SESSION_SECURE=true`, `APP_DEBUG=false` e il tuo `BASE_URL` in HTTPS.
-3. Rendi scrivibili dal web server la cartella `database/` (non solo il file: SQLite ci crea i file WAL) e `api/`, dove viene creata la cartella dei log.
-4. Crea l'utente con `php bin/create-user.php`.
-5. **Verifica** che `https://tuodominio/.env` e `https://tuodominio/database/tracktage.sqlite` rispondano **403**.
+1. Upload the project to your server, **without** your local `.env` and `database/` (both are already in `.gitignore`).
+2. Create the `.env` with `SESSION_SECURE=true`, `APP_DEBUG=false` and your HTTPS `BASE_URL`.
+3. Make the `database/` folder writable by the web server (the folder, not just the file: SQLite creates its WAL files there), and `api/` too, where the log folder is created.
+4. Create your user with `php bin/create-user.php`.
+5. **Check** that `https://yourdomain/.env` and `https://yourdomain/database/tracktage.sqlite` return **403**.
 
-> 💡 Ancora meglio: sposta il database **fuori dalla document root** con `DB_PATH=/home/utente/data/tracktage.sqlite`.
+> 💡 Even better: move the database **outside the document root** with `DB_PATH=/home/user/data/tracktage.sqlite`.
 
 ### Apache
 
-Funziona con il `.htaccess` incluso: servono `mod_rewrite` e `AllowOverride All`.
+Works out of the box with the bundled `.htaccess`: `mod_rewrite` and `AllowOverride All` are required.
 
 ### Nginx
 
-Nginx ignora i `.htaccess`, quindi le regole vanno nella configurazione del server:
+Nginx ignores `.htaccess` files, so the rules go in the server configuration:
 
 ```nginx
 server {
     root /var/www/tracktage;
     index index.php;
 
-    # Cartelle e file che non devono mai essere serviti
+    # Folders and files that must never be served
     location ~ ^/(database|bin|config|middleware|components|views|docs|api/(utils|services|log))/ { deny all; }
     location ~ /\.(?!well-known) { deny all; }
     location ~ \.(sqlite|sqlite3|sql|md)$ { deny all; }
@@ -168,71 +171,76 @@ server {
 }
 ```
 
-### Spostare i dati dal locale al server
+### Moving your data from local to the server
 
-Il file SQLite contiene tutto. Crea una copia consistente e caricala come `database/tracktage.sqlite`:
+The SQLite file holds everything. Create a consistent copy and upload it as `database/tracktage.sqlite`:
 
 ```bash
 sqlite3 database/tracktage.sqlite ".backup database/upload.sqlite"
 ```
 
-In alternativa scarica il database da **Impostazioni → Backup**.
+Alternatively, download the database from **Settings → Backup**.
 
-## 🔒 Sicurezza
+## 🔒 Security
 
-Tracktage è pensato per **un solo utente** e contiene dati sensibili, quindi:
+Tracktage is built for **a single user** and holds sensitive data, so:
 
-- **Nessuna registrazione dal web**: gli utenti si creano solo da riga di comando sul server
-- Password con **bcrypt**, aggiornate automaticamente se l'algoritmo cambia
-- **Rate limiting** sul login: 5 tentativi falliti per IP in 15 minuti
-- **Token CSRF** su ogni richiesta che modifica dati
-- Cookie di sessione `HttpOnly`, `SameSite=Strict`, `Secure` in HTTPS, con ID rigenerato al login
-- Header `X-Frame-Options`, `X-Content-Type-Options` e `Referrer-Policy`
-- Database, configurazione, script e log bloccati dal web server
-- Export CSV protetti dalla *formula injection* di Excel
+- **No web sign-up**: users can only be created from the command line on the server
+- Passwords hashed with **bcrypt**, automatically rehashed if the algorithm changes
+- **Login rate limiting**: 5 failed attempts per IP within 15 minutes
+- **CSRF tokens** on every request that changes data
+- `HttpOnly`, `SameSite=Strict` session cookies, `Secure` over HTTPS, with the session ID regenerated on login
+- `X-Frame-Options`, `X-Content-Type-Options` and `Referrer-Policy` headers
+- Database, configuration, scripts and logs blocked at the web server level
+- CSV exports protected against Excel *formula injection*
 
 ## Backup
 
-Da **Impostazioni → Backup**:
+From **Settings → Backup**:
 
-| Export | Contenuto |
+| Export | Contents |
 |---|---|
-| **Voci del patrimonio** (CSV) | Una riga per voce: sezione, ticker, quote, prezzi, valore, guadagno, note |
-| **Storico** (CSV) | Una riga per giorno salvato, con il totale di ogni sezione |
-| **Database completo** (`.sqlite`) | Copia consistente di tutto: per ripristinare, rimettila in `database/` |
+| **Holdings** (CSV) | One row per holding: section, ticker, shares, prices, value, gain, notes |
+| **History** (CSV) | One row per saved day, with the total of each section |
+| **Full database** (`.sqlite`) | A consistent copy of everything: to restore, put it back in `database/` |
 
-I CSV usano `;` come separatore e la virgola decimale, quindi si aprono subito in Excel in italiano.
+CSV files use `;` as separator and a decimal comma, so they open correctly in Excel with Italian (and most European) locales.
 
-## Struttura del progetto
+## Project structure
 
 ```
 ├── api/
-│   ├── endpoint/      # Un file per azione: auth, assets, categories, market, portfolio, backup
-│   ├── services/      # PriceService (quotazioni e cambi) · Portfolio (valorizzazione e snapshot)
-│   └── utils/         # Connessione SQLite, auth/CSRF, risposte JSON, CSV, logger
+│   ├── endpoint/      # One file per action: auth, assets, categories, market, portfolio, backup
+│   ├── services/      # PriceService (quotes and FX rates) · Portfolio (valuation and snapshots)
+│   └── utils/         # SQLite connection, auth/CSRF, JSON responses, CSV, logger
 ├── bin/               # create-user.php (CLI)
-├── components/        # Head, barra superiore e inferiore
-├── config/            # Caricamento .env e configurazione
-├── database/          # schema.sql (+ il file .sqlite, ignorato da git)
-├── script/            # JavaScript per pagina + app.js (helper comuni)
-├── style/             # CSS con variabili per tema chiaro e scuro
+├── components/        # Head, top bar and bottom navigation
+├── config/            # .env loader and configuration
+├── database/          # schema.sql (+ the .sqlite file, ignored by git)
+├── docs/              # README screenshots
+├── script/            # Per-page JavaScript + app.js (shared helpers)
+├── style/             # CSS with variables for light and dark themes
 ├── views/             # login · dashboard · category · statistics · settings
-└── index.php          # Router (anche per il server di sviluppo PHP)
+└── index.php          # Router (also used by the PHP development server)
 ```
 
-**Flusso:** `index.php` → `views/*.php` → AJAX → `api/endpoint/*` → `api/services/*` → SQLite
+**Request flow:** `index.php` → `views/*.php` → AJAX → `api/endpoint/*` → `api/services/*` → SQLite
 
-## Note
+## Notes
 
-- Le quotazioni arrivano dalle API pubbliche **non ufficiali** di Yahoo Finance, che possono cambiare o limitare le richieste. Se un prezzo non è disponibile, l'app usa l'ultimo salvato e lo segnala.
-- Lo storico si costruisce con l'uso: viene salvato uno snapshot al giorno quando apri la dashboard.
-- Tracktage è uno strumento di monitoraggio personale e **non fornisce consulenza finanziaria**.
+- Prices come from Yahoo Finance's **unofficial** public APIs, which may change or rate-limit requests. If a price is unavailable, the app falls back to the last cached one and flags it.
+- History builds up as you use the app: one snapshot per day is saved when you open the dashboard.
+- Tracktage is a personal tracking tool and **does not provide financial advice**.
 
 ## Roadmap
 
-- [ ] Movimenti di acquisto e vendita, con prezzo medio calcolato e storico ricostruito
-- [ ] Snapshot giornalieri tramite cron
-- [ ] Obiettivi: target del fondo emergenza e allocazione ideale con suggerimenti di ribilanciamento
-- [ ] Autenticazione a due fattori (TOTP)
-- [ ] Modalità privacy per nascondere gli importi
-- [ ] Deprezzamento automatico dei veicoli
+- [ ] Buy/sell transactions, with computed average cost and reconstructed history
+- [ ] Daily snapshots via cron
+- [ ] Goals: emergency fund target and ideal allocation with rebalancing suggestions
+- [ ] Two-factor authentication (TOTP)
+- [ ] Privacy mode to hide amounts
+- [ ] Automatic vehicle depreciation
+
+## License
+
+Released under the [MIT License](LICENSE).
