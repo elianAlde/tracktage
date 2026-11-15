@@ -4,5 +4,5 @@ require_once __DIR__ . '/../../services/PriceService.php';
 requireAuth();
 
 $quote = (new PriceService())->quote((string)input('symbol', ''));
-if (!$quote) Response::error("Ticker non trovato", 404);
+if (!$quote) Response::error(t('api.ticker_unknown'), 404);
 Response::success($quote);

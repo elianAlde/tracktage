@@ -23,8 +23,6 @@ ETFs, stocks, crypto, bank accounts, emergency fund, cars, real estate and debts
   <img src="assets/screenshots/dashboard-dark.jpg" alt="Dashboard in dark mode" width="200">
 </p>
 
-> **Note:** the user interface is in Italian 🇮🇹
-
 ---
 
 ## Why
@@ -46,6 +44,7 @@ No third-party cloud, no subscriptions, no data sharing: just PHP and a SQLite f
 - 📊 **History** of your net worth and of each section (1M, 3M, 1Y, 5Y, all time)
 - ⏰ **Reminders** for manual values that haven't been updated in a while (6 months by default)
 - 🌙 **Light, dark or automatic theme**
+- 🌍 **English and Italian**, switchable per device from Settings, with numbers and dates in the right format
 - 💾 **One-tap backups**: CSV of your holdings, CSV of your history (Excel-ready) or the full database
 - 📱 **Mobile-first PWA**, installable on the iOS and Android home screen
 - 🔒 **Single-user access**, with no public sign-up (see [Security](#-security))
@@ -75,6 +74,7 @@ For local development, set these in `.env`:
 
 ```env
 BASE_URL=http://localhost:8000/
+DEFAULT_LANG=en
 SESSION_SECURE=false
 APP_DEBUG=true
 ```
@@ -102,6 +102,7 @@ Everything is configured in the `.env` file:
 | Variable | Default | Description |
 |---|---|---|
 | `BASE_URL` | `http://localhost:8000/` | Public URL of the app, **with the trailing slash** |
+| `DEFAULT_LANG` | `it` | Default language (`it` or `en`), also used for the default section names on first run |
 | `SESSION_NAME` | `tracktage_session` | Session cookie name |
 | `DB_PATH` | `database/tracktage.sqlite` | Database path, relative to the project root or absolute |
 | `BASE_CURRENCY` | `EUR` | Currency your whole net worth is expressed in |
@@ -204,7 +205,7 @@ From **Settings → Backup**:
 | **History** (CSV) | One row per saved day, with the total of each section |
 | **Full database** (`.sqlite`) | A consistent copy of everything: to restore, put it back in `database/` |
 
-CSV files use `;` as separator and a decimal comma, so they open correctly in Excel with Italian (and most European) locales.
+CSV files follow the selected language: `;` and a decimal comma in Italian, `,` and a decimal point in English, so they open correctly in Excel.
 
 ## Project structure
 
@@ -218,6 +219,7 @@ CSV files use `;` as separator and a decimal comma, so they open correctly in Ex
 ├── components/        # Head, top bar and bottom navigation
 ├── config/            # .env loader and configuration
 ├── database/          # schema.sql (+ the .sqlite file, ignored by git)
+├── lang/              # Translations: it.php, en.php
 ├── script/            # Per-page JavaScript + app.js (shared helpers)
 ├── style/             # CSS with variables for light and dark themes
 ├── views/             # login · dashboard · category · statistics · settings
@@ -240,6 +242,13 @@ CSV files use `;` as separator and a decimal comma, so they open correctly in Ex
 - [ ] Two-factor authentication (TOTP)
 - [ ] Privacy mode to hide amounts
 - [ ] Automatic vehicle depreciation
+
+## Adding a language
+
+1. Copy `lang/en.php` to `lang/xx.php` and translate the values (keys stay the same; missing keys fall back to Italian).
+2. Add it to the `LANGS` map in `config/i18n.php` with its locale, e.g. `'de' => 'de-DE'`.
+
+It will appear automatically in **Settings → Language** and on the login page.
 
 ## License
 

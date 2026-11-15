@@ -7,7 +7,7 @@
 
     set_exception_handler(function (Throwable $e) {
         Logger::error($e->getMessage(), ['file' => $e->getFile(), 'line' => $e->getLine()]);
-        Response::error(APP_DEBUG ? $e->getMessage() : "Errore interno", 500);
+        Response::error(APP_DEBUG ? $e->getMessage() : t('api.internal'), 500);
     });
 
     /** Legge un parametro da POST/GET. */
@@ -17,14 +17,17 @@
     }
 
     /**
-     * Converte un numero scritto all'italiana in float; stringa vuota -> null.
-     * "1.234,56" -> 1234.56 · "7.400" -> 7400 · "0,12" -> 0.12 · "12.5" -> 12.5
+     * Converte un numero scritto secondo la lingua corrente in float; stringa vuota -> null.
+     * it: "1.234,56" -> 1234.56 · "7.400" -> 7400 · "0,12" -> 0.12 · "12.5" -> 12.5
+     * en: "1,234.56" -> 1234.56 · "7,400" -> 7400 · "0.12" -> 0.12
      */
     function inputNumber(string $key): ?float {
         $v = input($key);
         if ($v === null || $v === '') return null;
         $v = str_replace([' ', "\u{00A0}", '€'], '', (string)$v);
-        if (str_contains($v, ',')) {
+        if (LANG === 'en') {
+            $v = str_replace(',', '', $v);
+        } elseif (str_contains($v, ',')) {
             $v = str_replace('.', '', $v);
             $v = str_replace(',', '.', $v);
         } elseif (preg_match('/^-?\d{1,3}(\.\d{3})+$/', $v)) {
@@ -32,7 +35,7 @@
             $v = str_replace('.', '', $v);
         }
         if (!is_numeric($v)) {
-            Response::error("Valore numerico non valido per '$key'", 422);
+            Response::error(t('api.invalid_number', ['field' => $key]), 422);
         }
         return (float)$v;
     }

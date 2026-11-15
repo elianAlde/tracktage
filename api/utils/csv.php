@@ -1,6 +1,7 @@
 <?php
 /**
- * CSV compatibile con Excel in italiano: separatore ";", virgola decimale, BOM UTF-8.
+ * CSV compatibile con Excel: in italiano separatore ";" e virgola decimale,
+ * in inglese separatore "," e punto decimale. BOM UTF-8 in entrambi i casi.
  */
 class Csv {
     public static function download(string $filename, array $header, iterable $rows): never {
@@ -8,11 +9,12 @@ class Csv {
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Cache-Control: no-store');
 
+        $sep = LANG === 'it' ? ';' : ',';
         $out = fopen('php://output', 'w');
         fwrite($out, "\xEF\xBB\xBF");
-        fputcsv($out, $header, ';', '"', '');
+        fputcsv($out, $header, $sep, '"', '');
         foreach ($rows as $row) {
-            fputcsv($out, array_map([self::class, 'cell'], $row), ';', '"', '');
+            fputcsv($out, array_map([self::class, 'cell'], $row), $sep, '"', '');
         }
         fclose($out);
         exit;
@@ -20,9 +22,10 @@ class Csv {
 
     private static function cell(mixed $v): string {
         if ($v === null) return '';
-        if (is_bool($v)) return $v ? 'sì' : 'no';
+        if (is_bool($v)) return $v ? t('csv.yes') : t('csv.no');
         if (is_int($v) || is_float($v)) {
-            return str_replace('.', ',', rtrim(rtrim(number_format((float)$v, 6, '.', ''), '0'), '.'));
+            $n = rtrim(rtrim(number_format((float)$v, 6, '.', ''), '0'), '.');
+            return LANG === 'it' ? str_replace('.', ',', $n) : $n;
         }
         $v = (string)$v;
         // Evita che Excel interpreti il testo come formula

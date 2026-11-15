@@ -2,7 +2,7 @@
     // Con il server di sviluppo PHP (php -S localhost:8000 index.php) questo file fa da router
     if (PHP_SAPI === 'cli-server') {
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        if (preg_match('#^/(database|bin|config|middleware|components|views|api/(utils|services|log))(/|$)|/\.|\.(sqlite|sql|md)$#i', $path)) {
+        if (preg_match('#^/(database|bin|config|lang|middleware|components|views|api/(utils|services|log))(/|$)|/\.|\.(sqlite|sql|md)$#i', $path)) {
             http_response_code(403);
             exit('Forbidden');
         }

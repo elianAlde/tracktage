@@ -9,11 +9,11 @@
 	<!-- Sinistra -->
 	<div class="top-bar-side">
 		<?php if ($topBarBack): ?>
-			<a href="<?= is_string($topBarBack) ? $topBarBack : 'javascript:history.back()' ?>" class="text-body" aria-label="Indietro">
+			<a href="<?= is_string($topBarBack) ? $topBarBack : 'javascript:history.back()' ?>" class="text-body" aria-label="<?= te('top.back') ?>">
 				<i class="bi bi-arrow-left"></i>
 			</a>
 		<?php elseif ($topBarRefresh): ?>
-			<a href="#" class="text-body" id="btnRefresh" aria-label="Aggiorna quotazioni">
+			<a href="#" class="text-body" id="btnRefresh" aria-label="<?= te('top.refresh') ?>">
 				<i class="bi bi-arrow-clockwise"></i>
 			</a>
 		<?php endif; ?>
@@ -27,7 +27,7 @@
 	<!-- Destra -->
 	<div class="top-bar-side text-end">
 		<?php if ($topBarAdd): ?>
-			<a href="#" class="text-body" id="btnAdd" aria-label="Aggiungi">
+			<a href="#" class="text-body" id="btnAdd" aria-label="<?= te('top.add') ?>">
 				<i class="bi bi-plus-lg"></i>
 			</a>
 		<?php endif; ?>

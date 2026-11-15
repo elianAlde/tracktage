@@ -1,7 +1,7 @@
 let netChart = null, stackChart = null;
 
-const moneyTick = v => new Intl.NumberFormat('it-IT', { notation: 'compact', maximumFractionDigits: 1, style: 'currency', currency: base_currency }).format(v);
-const fmtDate = d => new Date(d + 'T00:00:00').toLocaleDateString('it-IT', { day: '2-digit', month: 'short' });
+const moneyTick = v => new Intl.NumberFormat(App.locale, { notation: 'compact', maximumFractionDigits: 1, style: 'currency', currency: base_currency }).format(v);
+const fmtDate = d => App.date(d + 'T00:00:00', { day: '2-digit', month: 'short' });
 
 function load(days) {
 	App.api('portfolio/history', { days }, 'GET').done(render).fail(msg => App.toast(msg, 'danger'));

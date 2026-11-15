@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-	<html lang="it">
+	<html lang="<?= LANG ?>">
 		<head>
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -46,6 +46,13 @@
 
 			<!-- BASE_URL per costruire il link agli endpoint API-->
 			<script>var server_url = "<?= BASE_URL ?>"; var base_currency = "<?= BASE_CURRENCY ?>";</script>
+			<!-- Lingua e traduzioni per il JavaScript -->
+			<script>var I18N = <?= json_encode([
+				'lang' => LANG,
+				'locale' => LOCALE,
+				'cookie' => LANG_COOKIE,
+				'strings' => translations(),
+			], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?>;</script>
 			<script src="<?= BASE_URL ?>script/app.js"></script>
 		</head>
 	<body>

@@ -16,7 +16,7 @@ foreach ($portfolio->history(36500) as $s) {
     $rows[] = $row;
 }
 
-Csv::download('tracktage-storico-' . date('Y-m-d') . '.csv',
-    array_merge(['Data', 'Attività', 'Passività', 'Patrimonio netto'], array_column($categories, 'name')),
+Csv::download(t('csv.file_history') . '-' . date('Y-m-d') . '.csv',
+    array_merge([t('csv.date'), t('csv.assets'), t('csv.liabilities'), t('csv.net_worth')], array_column($categories, 'name')),
     $rows
 );

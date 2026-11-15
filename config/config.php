@@ -17,6 +17,8 @@
     define('STALE_MONTHS', max(1, (int)($_ENV['STALE_MONTHS'] ?? 6)));
     define('APP_DEBUG', filter_var($_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN));
 
+    require_once __DIR__ . '/i18n.php';
+
     $dbPath = $_ENV['DB_PATH'] ?? 'database/tracktage.sqlite';
     define('DB_PATH', str_starts_with($dbPath, '/') ? $dbPath : ROOT_PATH . '/' . $dbPath);
 

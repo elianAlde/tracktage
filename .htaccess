@@ -5,7 +5,7 @@ RewriteEngine On
 <FilesMatch "^(\.env.*|.*\.sqlite.*|.*\.sql|README\.md|\.gitignore)$">
     Require all denied
 </FilesMatch>
-RewriteRule ^(database|bin|config|middleware|components|views)/ - [F,L]
+RewriteRule ^(database|bin|config|lang|middleware|components|views)/ - [F,L]
 
 # Se esiste un file o directory, non riscrivere
 RewriteCond %{REQUEST_FILENAME} !-f

@@ -15,26 +15,34 @@
 	<div class="text-center mb-4">
 		<div class="login-logo mx-auto"><i class="bi bi-safe2"></i></div>
 		<h3 class="fw-bold mt-3">Tracktage</h3>
-		<p class="text-muted">Accedi per vedere il tuo patrimonio</p>
+		<p class="text-muted"><?= te('login.subtitle') ?></p>
 	</div>
 
 	<form id="formLogin" class="needs-validation" novalidate method="post">
 		<div class="mb-3">
 			<input type="email" class="form-control" placeholder="Email" id="email" name="email" autocomplete="username" required>
-			<div class="invalid-feedback">Inserisci un'email valida.</div>
+			<div class="invalid-feedback"><?= te('login.email_invalid') ?></div>
 		</div>
 
 		<div class="mb-3">
 			<input type="password" class="form-control" placeholder="Password" id="password" name="password" autocomplete="current-password" required>
-			<div class="invalid-feedback">La password è obbligatoria.</div>
+			<div class="invalid-feedback"><?= te('login.password_required') ?></div>
 		</div>
 
 		<div id="loginError" class="alert alert-danger py-2 small d-none"></div>
 
 		<div class="d-grid mb-3">
-			<button class="btn btn-primary" type="submit">Accedi</button>
+			<button class="btn btn-primary" type="submit"><?= te('login.submit') ?></button>
 		</div>
 	</form>
+
+	<!-- Lingua -->
+	<div class="text-center small mt-4 lang-switch">
+		<?php foreach (array_keys(LANGS) as $i => $code): ?>
+			<?= $i ? '<span class="text-muted mx-1">·</span>' : '' ?>
+			<a href="#" data-lang="<?= $code ?>" class="text-decoration-none <?= $code === LANG ? 'fw-semibold text-body' : 'text-muted' ?>"><?= strtoupper($code) ?></a>
+		<?php endforeach; ?>
+	</div>
 </div>
 
 <script src="<?= BASE_URL ?>script/login.js"></script>

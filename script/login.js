@@ -1,4 +1,9 @@
 $(function () {
+	$('.lang-switch').on('click', '[data-lang]', function (e) {
+		e.preventDefault();
+		App.setLang($(this).data('lang'));
+	});
+
 	$('#formLogin').on('submit', function (e) {
 		e.preventDefault();
 		const form = this;

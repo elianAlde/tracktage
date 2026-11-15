@@ -31,9 +31,28 @@
             // Al primo avvio crea tabelle e sezioni di default
             if ($isNew || !$pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='users'")->fetch()) {
                 $pdo->exec(file_get_contents(ROOT_PATH . '/database/schema.sql'));
+                self::seed($pdo);
                 @chmod(DB_PATH, 0660);
             }
 
             return self::$conn = $pdo;
+        }
+
+        /** Sezioni di default, con i nomi nella lingua corrente. */
+        private static function seed(PDO $pdo): void {
+            if ($pdo->query("SELECT COUNT(*) FROM categories")->fetchColumn() > 0) return;
+            $rows = [
+                ['seed.etf',        'market', 'bi-graph-up-arrow',   '#0d6efd', 0],
+                ['seed.crypto',     'market', 'bi-currency-bitcoin', '#f7931a', 0],
+                ['seed.cash',       'manual', 'bi-wallet2',          '#198754', 0],
+                ['seed.emergency',  'manual', 'bi-shield-check',     '#20c997', 0],
+                ['seed.vehicles',   'manual', 'bi-car-front',        '#6f42c1', 0],
+                ['seed.realestate', 'manual', 'bi-house',            '#fd7e14', 0],
+                ['seed.debts',      'manual', 'bi-credit-card',      '#dc3545', 1],
+            ];
+            $s = $pdo->prepare("INSERT INTO categories (name, kind, icon, color, is_liability, sort_order) VALUES (?, ?, ?, ?, ?, ?)");
+            foreach ($rows as $i => [$key, $kind, $icon, $color, $liability]) {
+                $s->execute([t($key), $kind, $icon, $color, $liability, ($i + 1) * 10]);
+            }
         }
     }

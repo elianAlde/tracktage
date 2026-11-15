@@ -2,16 +2,14 @@
 	require_once __DIR__ . '/../middleware/auth.php';
 	include __DIR__ . '/../components/head.php';
 
-	$topBarTitle = 'Impostazioni';
+	$topBarTitle = t('nav.settings');
 	$activePage = 'settings';
 	include __DIR__ . '/../components/menu-top.php';
 
 	$icons = [
-		'bi-graph-up-arrow' => 'Grafico', 'bi-currency-bitcoin' => 'Crypto', 'bi-wallet2' => 'Portafoglio',
-		'bi-bank' => 'Banca', 'bi-piggy-bank' => 'Salvadanaio', 'bi-shield-check' => 'Scudo',
-		'bi-car-front' => 'Auto', 'bi-bicycle' => 'Moto/bici', 'bi-house' => 'Casa', 'bi-building' => 'Edificio',
-		'bi-gem' => 'Gioielli', 'bi-coin' => 'Moneta', 'bi-briefcase' => 'Lavoro', 'bi-credit-card' => 'Carta',
-		'bi-cash-stack' => 'Contanti', 'bi-umbrella' => 'Previdenza', 'bi-box-seam' => 'Oggetti', 'bi-laptop' => 'Elettronica',
+		'bi-graph-up-arrow', 'bi-currency-bitcoin', 'bi-wallet2', 'bi-bank', 'bi-piggy-bank', 'bi-shield-check',
+		'bi-car-front', 'bi-bicycle', 'bi-house', 'bi-building', 'bi-gem', 'bi-coin',
+		'bi-briefcase', 'bi-credit-card', 'bi-cash-stack', 'bi-umbrella', 'bi-box-seam', 'bi-laptop',
 	];
 	$colors = ['#0d6efd', '#6f42c1', '#d63384', '#dc3545', '#fd7e14', '#f7931a', '#ffc107', '#198754', '#20c997', '#0dcaf0', '#6c757d', '#212529'];
 ?>
@@ -30,50 +28,61 @@
 
 	<!-- SEZIONI -->
 	<div class="d-flex justify-content-between align-items-center mb-2 px-1" id="sections">
-		<h6 class="fw-semibold mb-0">Sezioni del patrimonio</h6>
-		<a href="#" class="small text-decoration-none" id="btnAddCategory"><i class="bi bi-plus-lg" style="font-size:14px"></i> Nuova</a>
+		<h6 class="fw-semibold mb-0"><?= te('set.sections') ?></h6>
+		<a href="#" class="small text-decoration-none" id="btnAddCategory"><i class="bi bi-plus-lg" style="font-size:14px"></i> <?= te('set.new') ?></a>
 	</div>
 	<div class="card overflow-hidden mb-3" id="categoriesList"></div>
 
 	<!-- ASPETTO -->
-	<h6 class="fw-semibold mb-2 px-1">Aspetto</h6>
+	<h6 class="fw-semibold mb-2 px-1"><?= te('set.appearance') ?></h6>
 	<div class="card p-2 mb-3">
 		<div class="btn-group w-100" role="group" id="themeGroup">
 			<input type="radio" class="btn-check" name="theme" id="themeAuto" value="auto">
-			<label class="btn btn-outline-primary btn-sm" for="themeAuto"><i class="bi bi-circle-half" style="font-size:14px"></i> Automatico</label>
+			<label class="btn btn-outline-primary btn-sm" for="themeAuto"><i class="bi bi-circle-half" style="font-size:14px"></i> <?= te('set.theme_auto') ?></label>
 			<input type="radio" class="btn-check" name="theme" id="themeLight" value="light">
-			<label class="btn btn-outline-primary btn-sm" for="themeLight"><i class="bi bi-sun" style="font-size:14px"></i> Chiaro</label>
+			<label class="btn btn-outline-primary btn-sm" for="themeLight"><i class="bi bi-sun" style="font-size:14px"></i> <?= te('set.theme_light') ?></label>
 			<input type="radio" class="btn-check" name="theme" id="themeDark" value="dark">
-			<label class="btn btn-outline-primary btn-sm" for="themeDark"><i class="bi bi-moon-stars" style="font-size:14px"></i> Scuro</label>
+			<label class="btn btn-outline-primary btn-sm" for="themeDark"><i class="bi bi-moon-stars" style="font-size:14px"></i> <?= te('set.theme_dark') ?></label>
+		</div>
+	</div>
+
+	<!-- LINGUA -->
+	<h6 class="fw-semibold mb-2 px-1"><?= te('set.language') ?></h6>
+	<div class="card p-2 mb-3">
+		<div class="btn-group w-100" role="group" id="langGroup">
+			<?php foreach (array_keys(LANGS) as $code): ?>
+				<input type="radio" class="btn-check" name="lang" id="lang_<?= $code ?>" value="<?= $code ?>" <?= $code === LANG ? 'checked' : '' ?>>
+				<label class="btn btn-outline-primary btn-sm" for="lang_<?= $code ?>"><?= htmlspecialchars((require __DIR__ . "/../lang/$code.php")['lang.name']) ?></label>
+			<?php endforeach; ?>
 		</div>
 	</div>
 
 	<!-- ACCOUNT -->
 	<div class="card overflow-hidden mb-3">
 		<a href="#" class="list-row" data-bs-toggle="modal" data-bs-target="#modalPassword">
-			<i class="bi bi-key" style="font-size:20px"></i><span class="flex-grow-1">Cambia password</span><i class="bi bi-chevron-right text-muted" style="font-size:14px"></i>
+			<i class="bi bi-key" style="font-size:20px"></i><span class="flex-grow-1"><?= te('set.change_password') ?></span><i class="bi bi-chevron-right text-muted" style="font-size:14px"></i>
 		</a>
 		<a href="#" class="list-row" id="addToHomeBtn">
-			<i class="bi bi-plus-square" style="font-size:20px"></i><span class="flex-grow-1">Aggiungi a schermata home</span><i class="bi bi-chevron-right text-muted" style="font-size:14px"></i>
+			<i class="bi bi-plus-square" style="font-size:20px"></i><span class="flex-grow-1"><?= te('set.add_home') ?></span><i class="bi bi-chevron-right text-muted" style="font-size:14px"></i>
 		</a>
 	</div>
 
 	<!-- BACKUP -->
-	<h6 class="fw-semibold mb-2 px-1">Backup</h6>
+	<h6 class="fw-semibold mb-2 px-1"><?= te('set.backup') ?></h6>
 	<div class="card overflow-hidden mb-3">
 		<a href="<?= BASE_URL ?>api/endpoint/backup/assets_csv.php" class="list-row" download>
 			<i class="bi bi-filetype-csv" style="font-size:20px"></i>
-			<div class="flex-grow-1"><div>Voci del patrimonio</div><div class="meta">CSV con valori attuali, apribile in Excel</div></div>
+			<div class="flex-grow-1"><div><?= te('set.backup_items') ?></div><div class="meta"><?= te('set.backup_items_desc') ?></div></div>
 			<i class="bi bi-download text-muted" style="font-size:16px"></i>
 		</a>
 		<a href="<?= BASE_URL ?>api/endpoint/backup/history_csv.php" class="list-row" download>
 			<i class="bi bi-filetype-csv" style="font-size:20px"></i>
-			<div class="flex-grow-1"><div>Storico patrimonio</div><div class="meta">CSV con una riga per ogni giorno salvato</div></div>
+			<div class="flex-grow-1"><div><?= te('set.backup_history') ?></div><div class="meta"><?= te('set.backup_history_desc') ?></div></div>
 			<i class="bi bi-download text-muted" style="font-size:16px"></i>
 		</a>
 		<a href="<?= BASE_URL ?>api/endpoint/backup/database.php" class="list-row" download>
 			<i class="bi bi-database-down" style="font-size:20px"></i>
-			<div class="flex-grow-1"><div>Database completo</div><div class="meta">File .sqlite, per ripristinare tutto</div></div>
+			<div class="flex-grow-1"><div><?= te('set.backup_db') ?></div><div class="meta"><?= te('set.backup_db_desc') ?></div></div>
 			<i class="bi bi-download text-muted" style="font-size:16px"></i>
 		</a>
 	</div>
@@ -81,7 +90,7 @@
 	<!-- LOGOUT -->
 	<div class="d-grid mt-4">
 		<a href="<?= BASE_URL ?>logout" class="btn btn-outline-danger d-flex justify-content-center align-items-center">
-			<i class="bi bi-box-arrow-right me-2" style="font-size:18px"></i> Logout
+			<i class="bi bi-box-arrow-right me-2" style="font-size:18px"></i> <?= te('set.logout') ?>
 		</a>
 	</div>
 </div>
@@ -91,7 +100,7 @@
 	<div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modalCategoryTitle">Nuova sezione</h5>
+				<h5 class="modal-title" id="modalCategoryTitle"><?= te('set.new_section') ?></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			</div>
 			<div class="modal-body">
@@ -99,27 +108,27 @@
 					<input type="hidden" name="id" id="catId">
 					<input type="hidden" name="color" id="catColor" value="<?= $colors[0] ?>">
 					<div class="mb-3">
-						<label class="form-label" for="catName">Nome</label>
-						<input type="text" class="form-control" id="catName" name="name" maxlength="60" placeholder="es. Fondo pensione" required>
+						<label class="form-label" for="catName"><?= te('common.name') ?></label>
+						<input type="text" class="form-control" id="catName" name="name" maxlength="60" placeholder="<?= te('set.section_name_placeholder') ?>" required>
 					</div>
 					<div class="mb-3">
-						<label class="form-label">Tipo di valore</label>
+						<label class="form-label"><?= te('set.kind') ?></label>
 						<select class="form-select" name="kind" id="catKind">
-							<option value="manual">Inserito a mano (liquidità, veicoli, immobili…)</option>
-							<option value="market">Quotazione di mercato (ETF, azioni, crypto)</option>
+							<option value="manual"><?= te('set.kind_manual') ?></option>
+							<option value="market"><?= te('set.kind_market') ?></option>
 						</select>
 						<div class="form-text" id="kindWarning"></div>
 					</div>
 					<div class="mb-3">
-						<label class="form-label" for="catIcon">Icona</label>
+						<label class="form-label" for="catIcon"><?= te('set.icon') ?></label>
 						<select class="form-select" name="icon" id="catIcon">
-							<?php foreach ($icons as $cls => $label): ?>
-								<option value="<?= $cls ?>"><?= $label ?></option>
+							<?php foreach ($icons as $cls): ?>
+								<option value="<?= $cls ?>"><?= te('icon.' . $cls) ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>
 					<div class="mb-3">
-						<label class="form-label">Colore</label>
+						<label class="form-label"><?= te('set.color') ?></label>
 						<div class="d-flex flex-wrap gap-2" id="colorPicker">
 							<?php foreach ($colors as $c): ?>
 								<span class="color-swatch" data-color="<?= $c ?>" style="background:<?= $c ?>"></span>
@@ -128,13 +137,13 @@
 					</div>
 					<div class="form-check form-switch">
 						<input class="form-check-input" type="checkbox" id="catLiability" name="is_liability" value="1">
-						<label class="form-check-label" for="catLiability">È una passività (debiti, mutuo) – viene sottratta</label>
+						<label class="form-check-label" for="catLiability"><?= te('set.liability_switch') ?></label>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer d-flex justify-content-between">
-				<button type="button" class="btn btn-outline-danger d-none" id="btnDeleteCategory">Elimina</button>
-				<button type="submit" class="btn btn-primary ms-auto" form="formCategory">Salva</button>
+				<button type="button" class="btn btn-outline-danger d-none" id="btnDeleteCategory"><?= te('common.delete') ?></button>
+				<button type="submit" class="btn btn-primary ms-auto" form="formCategory"><?= te('common.save') ?></button>
 			</div>
 		</div>
 	</div>
@@ -145,25 +154,25 @@
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Cambia password</h5>
+				<h5 class="modal-title"><?= te('set.change_password') ?></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			</div>
 			<div class="modal-body">
 				<form id="formPassword" novalidate>
 					<input type="email" class="d-none" autocomplete="username" value="<?= htmlspecialchars($_SESSION['email']) ?>">
 					<div class="mb-3">
-						<label class="form-label" for="current_password">Password attuale</label>
+						<label class="form-label" for="current_password"><?= te('set.current_password') ?></label>
 						<input type="password" class="form-control" id="current_password" name="current_password" autocomplete="current-password" required>
 					</div>
 					<div class="mb-3">
-						<label class="form-label" for="new_password">Nuova password</label>
+						<label class="form-label" for="new_password"><?= te('set.new_password') ?></label>
 						<input type="password" class="form-control" id="new_password" name="new_password" minlength="10" autocomplete="new-password" required>
-						<div class="form-text">Almeno 10 caratteri.</div>
+						<div class="form-text"><?= te('set.password_min') ?></div>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary" form="formPassword">Aggiorna</button>
+				<button type="submit" class="btn btn-primary" form="formPassword"><?= te('set.update') ?></button>
 			</div>
 		</div>
 	</div>
@@ -174,17 +183,17 @@
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content rounded-4">
 			<div class="modal-header">
-				<h5 class="modal-title">Installa Tracktage</h5>
+				<h5 class="modal-title"><?= te('set.install_title') ?></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			</div>
 			<div class="modal-body">
-				<p class="mb-3">Per aggiungere la webapp alla schermata Home del tuo iPhone:</p>
+				<p class="mb-3"><?= te('set.install_intro') ?></p>
 				<ol class="ps-3">
-					<li class="mb-2">Tocca <strong>Condividi</strong> <i class="bi bi-box-arrow-up fs-5 mx-1"></i></li>
-					<li class="mb-2">Scorri e seleziona <strong>Aggiungi a Home</strong> <i class="bi bi-plus-square fs-5 mx-1"></i></li>
-					<li>Premi <strong>Aggiungi</strong></li>
+					<li class="mb-2"><?= t('set.install_step1') ?> <i class="bi bi-box-arrow-up fs-5 mx-1"></i></li>
+					<li class="mb-2"><?= t('set.install_step2') ?> <i class="bi bi-plus-square fs-5 mx-1"></i></li>
+					<li><?= t('set.install_step3') ?></li>
 				</ol>
-				<div class="alert alert-secondary mt-3 small">Funziona solo da Safari</div>
+				<div class="alert alert-secondary mt-3 small"><?= te('set.install_safari') ?></div>
 			</div>
 		</div>
 	</div>

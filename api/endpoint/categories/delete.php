@@ -5,5 +5,5 @@ requireAuth();
 
 $s = Connection::get()->prepare("DELETE FROM categories WHERE id = ?");
 $s->execute([(int)input('id', 0)]);
-if ($s->rowCount() === 0) Response::error("Sezione non trovata", 404);
-Response::success(null, "Sezione eliminata");
+if ($s->rowCount() === 0) Response::error(t('api.section_not_found'), 404);
+Response::success(null, t('api.section_deleted'));

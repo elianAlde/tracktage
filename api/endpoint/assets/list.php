@@ -5,7 +5,7 @@ requireAuth();
 
 $portfolio = new Portfolio();
 $category = $portfolio->category((int)input('category_id', 0));
-if (!$category) Response::error("Sezione non trovata", 404);
+if (!$category) Response::error(t('api.section_not_found'), 404);
 
 $assets = $portfolio->assets((int)$category['id'], input('refresh') === '1');
 $category['total'] = array_sum(array_column($assets, 'current_value'));

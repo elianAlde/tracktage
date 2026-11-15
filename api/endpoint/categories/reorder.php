@@ -9,4 +9,4 @@ $s = $db->prepare("UPDATE categories SET sort_order = ? WHERE id = ?");
 $db->beginTransaction();
 foreach ($ids as $i => $id) $s->execute([($i + 1) * 10, $id]);
 $db->commit();
-Response::success(null, "Ordine aggiornato");
+Response::success(null, t('api.order_updated'));

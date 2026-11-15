@@ -65,14 +65,4 @@ CREATE TABLE IF NOT EXISTS snapshots (
     breakdown TEXT NOT NULL      -- JSON {category_id: valore}
 );
 
-INSERT INTO categories (name, kind, icon, color, is_liability, sort_order)
-SELECT * FROM (VALUES
-    ('ETF e Azioni',    'market', 'bi-graph-up-arrow',   '#0d6efd', 0, 10),
-    ('Crypto',          'market', 'bi-currency-bitcoin', '#f7931a', 0, 20),
-    ('Liquidità',       'manual', 'bi-wallet2',          '#198754', 0, 30),
-    ('Fondo emergenza', 'manual', 'bi-shield-check',     '#20c997', 0, 40),
-    ('Veicoli',         'manual', 'bi-car-front',        '#6f42c1', 0, 50),
-    ('Immobili',        'manual', 'bi-house',            '#fd7e14', 0, 60),
-    ('Debiti',          'manual', 'bi-credit-card',      '#dc3545', 1, 70)
-)
-WHERE NOT EXISTS (SELECT 1 FROM categories);
+-- Le sezioni di default vengono create da Connection::seed() nella lingua scelta

@@ -13,7 +13,7 @@ $db->prepare("DELETE FROM login_attempts WHERE attempted_at < ?")->execute([time
 $s = $db->prepare("SELECT COUNT(*) FROM login_attempts WHERE ip = ?");
 $s->execute([$ip]);
 if ((int)$s->fetchColumn() >= MAX_ATTEMPTS) {
-    Response::error("Troppi tentativi falliti. Riprova tra 15 minuti.", 429);
+    Response::error(t('api.too_many_attempts'), 429);
 }
 
 $email = (string)input('email', '');
@@ -28,7 +28,7 @@ $hash = $user['password'] ?? '$2y$12$invalidinvalidinvalidinvalidinvalidinvalidi
 if (!password_verify($password, $hash) || !$user) {
     $db->prepare("INSERT INTO login_attempts (ip, attempted_at) VALUES (?, ?)")->execute([$ip, time()]);
     usleep(random_int(200000, 500000));
-    Response::error("Credenziali non valide", 401);
+    Response::error(t('api.bad_credentials'), 401);
 }
 
 if (password_needs_rehash($user['password'], PASSWORD_DEFAULT)) {
@@ -43,4 +43,4 @@ $_SESSION['last_name'] = $user['last_name'];
 $_SESSION['email'] = $user['email'];
 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
-Response::success(null, "Accesso effettuato");
+Response::success(null, t('api.logged_in'));
