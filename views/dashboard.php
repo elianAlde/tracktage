@@ -10,25 +10,28 @@
 
 <div class="container app-container py-3">
 	<!-- TOTALE -->
-	<div class="card hero-card p-4 mb-3">
-		<div class="label"><?= te('dash.net_worth') ?></div>
-		<div class="amount" id="netWorth">—</div>
-		<div class="d-flex gap-4 mt-2 small">
-			<div><span class="label"><?= te('dash.assets') ?></span><br><strong id="totalAssets">—</strong></div>
-			<div><span class="label"><?= te('dash.liabilities') ?></span><br><strong id="totalLiabilities">—</strong></div>
+	<section class="card nw-hero mb-3">
+		<div class="nw-label"><?= te('dash.net_worth') ?></div>
+		<div class="nw-amount" id="netWorth">—</div>
+		<div class="nw-change" id="netChange"></div>
+		<div class="nw-spark d-none" id="sparkWrap"><canvas id="sparkline"></canvas></div>
+		<div class="nw-split">
+			<div><span><?= te('dash.assets') ?></span><strong class="text-success" id="totalAssets">—</strong></div>
+			<div><span><?= te('dash.liabilities') ?></span><strong class="text-danger" id="totalLiabilities">—</strong></div>
 		</div>
-	</div>
+	</section>
 
 	<!-- VALORI DA AGGIORNARE -->
-	<div class="alert alert-warning d-none d-flex align-items-center gap-2 py-2 small" id="staleAlert" role="alert">
-		<i class="bi bi-clock-history" style="font-size:18px"></i>
+	<div class="notice d-none mb-3" id="staleAlert" role="status">
+		<i class="bi bi-clock-history"></i>
 		<span id="staleText"></span>
 	</div>
 
 	<!-- ALLOCAZIONE -->
 	<div class="card p-3 mb-3" id="allocationCard">
 		<h6 class="fw-semibold mb-3"><?= te('dash.allocation') ?></h6>
-		<div class="mx-auto" style="max-width: 260px;"><canvas id="allocationChart"></canvas></div>
+		<div class="mx-auto" style="max-width: 240px;"><canvas id="allocationChart"></canvas></div>
+		<ul class="alloc-legend" id="allocLegend"></ul>
 	</div>
 
 	<!-- SEZIONI -->

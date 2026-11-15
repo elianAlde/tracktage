@@ -27,8 +27,9 @@ function render({ categories, snapshots }) {
 			datasets: [{
 				data: snapshots.map(s => s.net_worth),
 				borderColor: '#0d6efd',
-				backgroundColor: 'rgba(13,110,253,.08)',
-				fill: true, tension: .3, pointRadius: snapshots.length > 40 ? 0 : 3
+				backgroundColor: 'rgba(13,110,253,.06)',
+				borderWidth: 2,
+				fill: true, tension: .2, pointRadius: snapshots.length > 40 ? 0 : 2
 			}]
 		},
 		options: {

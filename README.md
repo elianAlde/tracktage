@@ -1,53 +1,45 @@
 <div align="center">
 
-<img src="assets/logos/icon.svg" alt="Tracktage" width="96" height="96">
+<img src="assets/logos/icon.svg" alt="" width="72" height="72">
 
 # Tracktage
 
-**Your net worth, all in one place.**
-ETFs, stocks, crypto, bank accounts, emergency fund, cars, real estate and debts in a single web app, with prices updated automatically.
+A self-hosted net worth tracker for one person.
 
-![PHP](https://img.shields.io/badge/PHP-8.1%2B-777BB4?logo=php&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-zero%20config-003B57?logo=sqlite&logoColor=white)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?logo=bootstrap&logoColor=white)
-![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?logo=pwa&logoColor=white)
-![Self-hosted](https://img.shields.io/badge/self--hosted-single%20user-0d6efd)
-![License: MIT](https://img.shields.io/badge/license-MIT-green)
+![PHP 8.1+](https://img.shields.io/badge/PHP-8.1%2B-555?logo=php&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-555?logo=sqlite&logoColor=white)
+![License: MIT](https://img.shields.io/badge/license-MIT-555)
 
 </div>
 
 <p align="center">
   <img src="assets/screenshots/dashboard.jpg" alt="Dashboard" width="200">
-  <img src="assets/screenshots/andamento.jpg" alt="Net worth over time" width="200">
+  <img src="assets/screenshots/history.jpg" alt="Net worth over time" width="200">
   <img src="assets/screenshots/etf-dark.jpg" alt="ETF section in dark mode" width="200">
   <img src="assets/screenshots/dashboard-dark.jpg" alt="Dashboard in dark mode" width="200">
 </p>
 
----
+Tracktage keeps ETFs, stocks, crypto, bank accounts, the emergency fund, cars, property and debts
+in one place. Market holdings are priced automatically; everything else you update by hand. A
+snapshot is saved every day, so over time you get a history of your net worth.
 
-## Why
-
-Net worth spreadsheets get out of hand: prices to update by hand, formulas that break, no history.
-Tracktage is a **self-hosted, personal** web app that installs on your phone like a native app.
-ETF prices update on their own, and every day it saves a snapshot of your net worth, so you can
-actually see how it grows over time.
-
-No third-party cloud, no subscriptions, no data sharing: just PHP and a SQLite file, on your own server.
+It runs on plain PHP and a single SQLite file, installs on your phone as a web app, and is meant
+to be used by exactly one person on their own server.
 
 ## Features
 
-- 📈 **Live prices** for ETFs, stocks and crypto from Yahoo Finance, with no API key, caching and automatic conversion to your base currency
-- 🔎 **Instrument search** by ticker, name or ISIN (`IE00BK5BQT80` → `VWCE.DE`)
-- 💰 **Gain/loss** against your average cost, per holding and per section
-- 🗂️ **Custom sections**, each either *market-priced* (ticker × shares) or *manual* (cars, accounts, property…), with their own icon and color
-- ➖ **Liabilities**: mortgages and loans are subtracted from your net worth
-- 📊 **History** of your net worth and of each section (1M, 3M, 1Y, 5Y, all time)
-- ⏰ **Reminders** for manual values that haven't been updated in a while (6 months by default)
-- 🌙 **Light, dark or automatic theme**
-- 🌍 **English and Italian**, switchable per device from Settings, with numbers and dates in the right format
-- 💾 **One-tap backups**: CSV of your holdings, CSV of your history (Excel-ready) or the full database
-- 📱 **Mobile-first PWA**, installable on the iOS and Android home screen
-- 🔒 **Single-user access**, with no public sign-up (see [Security](#-security))
+- Live prices for ETFs, stocks and crypto from Yahoo Finance (no API key), cached and converted to your base currency
+- Instrument search by ticker, name or ISIN (`IE00BK5BQT80` → `VWCE.DE`)
+- Gain/loss against your average cost, per holding and per section
+- Custom sections, either market-priced (ticker × shares) or manual (cars, accounts, property), each with its own icon and color
+- Liabilities such as mortgages and loans, subtracted from the total
+- Net worth history and a breakdown by section (1M, 3M, 1Y, 5Y, all)
+- Reminders for manual values that haven't been updated in a while (6 months by default)
+- Light, dark or automatic theme
+- English and Italian, switchable per device, with numbers and dates formatted accordingly
+- Backups from the settings page: holdings as CSV, history as CSV, or the full database
+- Installable on the iOS and Android home screen
+- Single-user login with no public sign-up (see [Security](#security))
 
 ## Stack
 
@@ -65,7 +57,7 @@ Frontend libraries are bundled in `vendors/`. Chart.js is loaded from jsDelivr w
 **Requirements:** PHP 8.1+ with the `pdo_sqlite` and `curl` extensions.
 
 ```bash
-git clone https://github.com/<your-username>/tracktage.git
+git clone https://github.com/elianAlde/tracktage.git
 cd tracktage
 cp .env.example .env
 ```
@@ -140,7 +132,7 @@ Prices in currencies other than `BASE_CURRENCY` are converted at the current exc
 4. Create your user with `php bin/create-user.php`.
 5. **Check** that `https://yourdomain/.env` and `https://yourdomain/database/tracktage.sqlite` return **403**.
 
-> 💡 Even better: move the database **outside the document root** with `DB_PATH=/home/user/data/tracktage.sqlite`.
+> Even better: move the database **outside the document root** with `DB_PATH=/home/user/data/tracktage.sqlite`.
 
 ### Apache
 
@@ -182,7 +174,7 @@ sqlite3 database/tracktage.sqlite ".backup database/upload.sqlite"
 
 Alternatively, download the database from **Settings → Backup**.
 
-## 🔒 Security
+## Security
 
 Tracktage is built for **a single user** and holds sensitive data, so:
 

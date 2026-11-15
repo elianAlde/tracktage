@@ -1,18 +1,20 @@
 let allocationChart = null;
+let sparkChart = null;
 
 function loadSummary(refresh = false) {
 	const $icon = $('#btnRefresh i').addClass('spin');
 
 	App.api('portfolio/summary', { refresh: refresh ? 1 : 0 }, 'GET')
-		.done(render)
+		.done(data => { render(data); loadTrend(); })
 		.fail(msg => App.toast(msg, 'danger'))
 		.always(() => $icon.removeClass('spin'));
 }
 
 function render(data) {
 	$('#netWorth').text(App.money(data.net_worth));
-	$('#totalAssets').text(App.money(data.total_assets));
-	$('#totalLiabilities').text(App.money(data.total_liabilities));
+	// Verde/rosso solo se c'è un importo: uno zero resta neutro
+	$('#totalAssets').text(App.money(data.total_assets)).toggleClass('text-success', data.total_assets > 0);
+	$('#totalLiabilities').text(App.money(data.total_liabilities)).toggleClass('text-danger', data.total_liabilities > 0);
 
 	if (data.stale_total > 0) {
 		$('#staleText').text(data.stale_total === 1
@@ -55,9 +57,57 @@ function render(data) {
 	renderChart(data.categories.filter(c => !c.is_liability && c.total > 0));
 }
 
+// Variazione e sparkline degli ultimi 30 giorni (dopo il summary, che salva lo snapshot di oggi)
+function loadTrend() {
+	App.api('portfolio/history', { days: 30 }, 'GET').done(({ snapshots }) => {
+		if (snapshots.length < 2) {
+			$('#netChange').empty();
+			$('#sparkWrap').addClass('d-none');
+			return;
+		}
+		const values = snapshots.map(s => s.net_worth);
+		const first = values[0], last = values[values.length - 1], diff = last - first;
+		const since = snapshots[0].snapshot_date;
+		const spanDays = Math.round((Date.now() - new Date(since + 'T00:00:00')) / 86400000);
+		const period = spanDays >= 28 ? App.t('dash.last_30d') : App.t('dash.since', { date: App.date(since + 'T00:00:00', { day: 'numeric', month: 'short' }) });
+
+		$('#netChange').html(
+			`<span class="${App.signClass(diff)}">${diff > 0 ? '+' : ''}${App.money(diff)}${first ? ' (' + App.pct(diff / Math.abs(first) * 100) + ')' : ''}</span>` +
+			` <span class="period">${App.esc(period)}</span>`
+		);
+
+		const color = App.cssVar(diff < 0 ? '--app-down' : '--app-up');
+		$('#sparkWrap').removeClass('d-none');
+		sparkChart?.destroy();
+		sparkChart = new Chart($('#sparkline'), {
+			type: 'line',
+			data: { labels: values.map((_, i) => i), datasets: [{ data: values, borderColor: color, borderWidth: 2, pointRadius: 0, tension: .2, fill: false }] },
+			options: {
+				maintainAspectRatio: false,
+				animation: false,
+				events: [],
+				plugins: { legend: { display: false }, tooltip: { enabled: false } },
+				scales: { x: { display: false }, y: { display: false } }
+			}
+		});
+	});
+}
+
 function renderChart(cats) {
 	$('#allocationCard').toggle(cats.length > 0);
 	if (!cats.length) return;
+
+	// Dalla sezione più grande alla più piccola, uguale nel grafico e nella legenda
+	cats = [...cats].sort((a, b) => b.total - a.total);
+	const total = cats.reduce((s, c) => s + c.total, 0);
+	const share = c => App.pct(c.total / total * 100).replace('+', '');
+
+	$('#allocLegend').html(cats.map(c => `
+		<li>
+			<span class="dot" style="background:${c.color}"></span>
+			<span class="name">${App.esc(c.name)}</span>
+			<span class="pct">${share(c)}</span>
+		</li>`).join(''));
 
 	const cfg = {
 		labels: cats.map(c => c.name),
@@ -74,8 +124,8 @@ function renderChart(cats) {
 		options: {
 			cutout: '65%',
 			plugins: {
-				legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } },
-				tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + App.money(ctx.raw) } }
+				legend: { display: false },
+				tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${App.money(ctx.raw)} (${App.pct(ctx.raw / ctx.dataset.data.reduce((s, v) => s + v, 0) * 100).replace('+', '')})` } }
 			}
 		}
 	});

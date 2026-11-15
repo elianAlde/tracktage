@@ -10,6 +10,8 @@
     --app-divider: #f1f3f5;
     --app-pressed: #f8f9fa;
     --app-nav-muted: #8a929a;
+    --app-up: #198754;
+    --app-down: #d63340;
 }
 [data-bs-theme="dark"] {
     --app-bg: #0f1115;
@@ -17,6 +19,8 @@
     --app-divider: #262a31;
     --app-pressed: #22262d;
     --app-nav-muted: #7d8590;
+    --app-up: #4cc38a;
+    --app-down: #f2777f;
     --bs-body-bg: #0f1115;
     --bs-secondary-bg: #1a1d23;
     --bs-tertiary-bg: #22262d;
@@ -27,7 +31,9 @@
 [data-bs-theme="dark"] .list-group-item { background-color: var(--app-surface); }
 [data-bs-theme="dark"] .form-control,
 [data-bs-theme="dark"] .form-select { background-color: var(--bs-tertiary-bg); }
-[data-bs-theme="dark"] .hero-card { background: linear-gradient(135deg, #1b4fd8 0%, #5a35a3 100%); }
+/* Guadagni e perdite: in tema scuro i verdi/rossi di Bootstrap sono poco leggibili */
+.text-success { color: var(--app-up) !important; }
+.text-danger { color: var(--app-down) !important; }
 
 .btn-soft {
     background: var(--bs-tertiary-bg);
@@ -84,12 +90,54 @@ body {
 
 .card { border: 0; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
 
-.hero-card {
-    background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
-    color: #fff;
+/* Testata patrimonio netto: card neutra come le altre, il numero è il protagonista */
+.nw-hero { padding: 1rem 1rem 1.25rem; }
+.nw-label { font-size: .85rem; color: var(--bs-secondary-color); }
+.nw-amount {
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: .15rem 0 .35rem;
 }
-.hero-card .label { opacity: .8; font-size: .85rem; }
-.hero-card .amount { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.5px; }
+.nw-change { font-size: .9rem; font-weight: 500; min-height: 1.35rem; }
+.nw-change .period { color: var(--bs-secondary-color); font-weight: 400; }
+.nw-spark { height: 56px; margin: .75rem 0 1rem; }
+.nw-split { display: flex; gap: 2rem; font-size: .85rem; }
+.nw-split span { display: block; color: var(--bs-secondary-color); }
+.nw-split strong { font-size: 1rem; font-weight: 600; }
+
+/* Avviso discreto: superficie neutra, solo l'icona colorata */
+.notice {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    padding: .7rem 1rem;
+    background: var(--app-surface);
+    border-radius: .85rem;
+    font-size: .875rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.notice.d-none { display: none; }
+.notice i { font-size: 18px; color: var(--bs-warning); }
+[data-bs-theme="dark"] .notice { box-shadow: none; }
+
+/* Legenda dell'allocazione: una riga per sezione con la percentuale */
+.alloc-legend { list-style: none; padding: 0; margin: 1rem 0 0; }
+.alloc-legend li {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .45rem 0;
+    font-size: .9rem;
+}
+.alloc-legend li + li { border-top: 1px solid var(--app-divider); }
+.alloc-legend .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.alloc-legend .name { flex-grow: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.alloc-legend .pct { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Numeri allineati in colonna */
+.amount-sm, .nw-amount, .nw-split strong, #categoryTotal { font-variant-numeric: tabular-nums; }
 
 .cat-icon {
     width: 42px;

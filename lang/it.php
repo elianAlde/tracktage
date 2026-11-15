@@ -48,6 +48,8 @@ return [
     'dash.no_sections' => 'Nessuna sezione. Creane una dalle impostazioni.',
     'dash.prices_unavailable' => 'Quotazioni non disponibili',
     'dash.to_update'   => '{n} da aggiornare',
+    'dash.last_30d'    => 'ultimi 30 giorni',
+    'dash.since'       => 'dal {date}',
 
     /* Sezione */
     'cat.total_value'       => 'Valore totale',

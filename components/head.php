@@ -28,6 +28,7 @@
 			<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE_URL ?>assets/logos/favicon-32.png">
 
 			<!-- PWA utils -->
+			<meta name="mobile-web-app-capable" content="yes">
 			<meta name="apple-mobile-web-app-capable" content="yes">
 			<meta name="apple-mobile-web-app-status-bar-style" content="default">
 			<link rel="apple-touch-icon" href="<?= BASE_URL ?>assets/logos/apple-touch-icon.png">

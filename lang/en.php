@@ -48,6 +48,8 @@ return [
     'dash.no_sections' => 'No sections yet. Create one in Settings.',
     'dash.prices_unavailable' => 'Prices unavailable',
     'dash.to_update'   => '{n} to update',
+    'dash.last_30d'    => 'last 30 days',
+    'dash.since'       => 'since {date}',
 
     /* Section */
     'cat.total_value'       => 'Total value',
