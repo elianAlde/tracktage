@@ -17,6 +17,10 @@ function loadEnv($path){
         $name = trim($name);
         $value = trim(trim($value), "\"'");
 
+        if (getenv($name) !== false) {
+            $value = getenv($name);
+        }
+
         $_ENV[$name] = $value;
         putenv("$name=$value");
     }

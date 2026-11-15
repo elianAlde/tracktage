@@ -1,4 +1,4 @@
-body { padding: 0; background: #fff; }
+body { padding: 0; background: var(--bs-body-bg); }
 
 .login-container {
 	max-width: 400px;

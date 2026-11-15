@@ -13,8 +13,8 @@ function loadCategories() {
 					<div class="fw-medium text-truncate">${App.esc(c.name)}</div>
 					<div class="meta">${c.kind === 'market' ? 'Quotazione di mercato' : 'Valore manuale'}${c.is_liability ? ' · passività' : ''} · ${c.count} voci</div>
 				</div>
-				<button class="btn btn-sm btn-light btn-move" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Su"><i class="bi bi-chevron-up" style="font-size:14px"></i></button>
-				<button class="btn btn-sm btn-light btn-move" data-dir="1" ${i === list.length - 1 ? 'disabled' : ''} aria-label="Giù"><i class="bi bi-chevron-down" style="font-size:14px"></i></button>
+				<button class="btn btn-sm btn-soft btn-move" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Su"><i class="bi bi-chevron-up" style="font-size:14px"></i></button>
+				<button class="btn btn-sm btn-soft btn-move" data-dir="1" ${i === list.length - 1 ? 'disabled' : ''} aria-label="Giù"><i class="bi bi-chevron-down" style="font-size:14px"></i></button>
 			</div>`));
 	}).fail(msg => App.toast(msg, 'danger'));
 }
@@ -82,6 +82,15 @@ $(function () {
 		App.api('auth/change_password', $(this).serialize())
 			.done(() => { bootstrap.Modal.getInstance('#modalPassword').hide(); this.reset(); $(this).removeClass('was-validated'); App.toast('Password aggiornata', 'success'); })
 			.fail(msg => App.toast(msg, 'danger'));
+	});
+
+	// Tema (preferenza salvata su questo dispositivo)
+	let theme = 'auto';
+	try { theme = localStorage.getItem('theme') || 'auto'; } catch (e) {}
+	$(`#themeGroup input[value="${theme}"]`).prop('checked', true);
+	$('#themeGroup').on('change', 'input', function () {
+		try { localStorage.setItem('theme', this.value); } catch (e) {}
+		window.applyTheme(this.value);
 	});
 
 	if (location.hash === '#sections') document.getElementById('sections').scrollIntoView();

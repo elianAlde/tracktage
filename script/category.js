@@ -46,7 +46,10 @@ function render(data) {
 					? `<div class="meta ${App.signClass(a.gain)}">${App.pct(a.gain_pct)}</div>`
 					: (q && q.change_pct !== null ? `<div class="meta ${App.signClass(q.change_pct)}">${App.pct(q.change_pct)} oggi</div>` : ''));
 		} else {
-			meta = a.notes ? App.esc(a.notes) : 'Aggiornato il ' + new Date(a.updated_at.replace(' ', 'T') + 'Z').toLocaleDateString('it-IT');
+			const updated = new Date(a.updated_at.replace(' ', 'T') + 'Z').toLocaleDateString('it-IT');
+			meta = a.stale
+				? `<span class="text-warning-emphasis"><i class="bi bi-clock-history" style="font-size:11px"></i> Da aggiornare · fermo dal ${updated}</span>`
+				: (a.notes ? App.esc(a.notes) : 'Aggiornato il ' + updated);
 		}
 		$list.append(`
 			<div class="list-row" data-id="${a.id}">
@@ -74,6 +77,8 @@ function openModal(asset = null) {
 	$('#assetId').val(asset?.id || '');
 	$('#modalAssetTitle').text(asset ? 'Modifica' : 'Aggiungi');
 	$('#btnDelete').toggleClass('d-none', !asset);
+	$('#staleHint').toggleClass('d-none', !asset?.stale)
+		.find('span').text(asset?.stale ? `Valore fermo da ${asset.months_since_update} mesi. Controllalo e salva: anche senza modifiche risulterà aggiornato a oggi.` : '');
 
 	if (asset) {
 		$('#name').val(asset.name);
@@ -90,9 +95,11 @@ function openModal(asset = null) {
 	modal.show();
 }
 
+// Stessa logica di inputNumber() lato server: "7.400" -> 7400, "1.234,5" -> 1234.5
 function parseNum(v) {
-	v = String(v || '').replace(/\s/g, '');
+	v = String(v || '').replace(/[\s€]/g, '');
 	if (v.includes(',')) v = v.replace(/\./g, '').replace(',', '.');
+	else if (/^-?\d{1,3}(\.\d{3})+$/.test(v)) v = v.replace(/\./g, '');
 	const n = parseFloat(v);
 	return isNaN(n) ? null : n;
 }

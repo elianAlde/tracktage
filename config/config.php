@@ -14,6 +14,7 @@
     define('SESSION_NAME', $_ENV['SESSION_NAME'] ?? 'tracktage_session');
     define('BASE_CURRENCY', strtoupper($_ENV['BASE_CURRENCY'] ?? 'EUR'));
     define('PRICE_CACHE_MINUTES', (int)($_ENV['PRICE_CACHE_MINUTES'] ?? 15));
+    define('STALE_MONTHS', max(1, (int)($_ENV['STALE_MONTHS'] ?? 6)));
     define('APP_DEBUG', filter_var($_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN));
 
     $dbPath = $_ENV['DB_PATH'] ?? 'database/tracktage.sqlite';

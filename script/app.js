@@ -59,6 +59,16 @@ const App = {
 		toast.show();
 	},
 
+	// Colori di default dei grafici coerenti con il tema (chiamare dopo aver caricato Chart.js)
+	chartTheme() {
+		Chart.defaults.color = App.cssVar('--bs-secondary-color');
+		Chart.defaults.borderColor = App.cssVar('--bs-border-color');
+	},
+
+	cssVar(name) {
+		return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+	},
+
 	timeAgo(unix) {
 		const diff = Math.floor(Date.now() / 1000 - unix);
 		if (diff < 60) return 'adesso';

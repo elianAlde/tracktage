@@ -1,6 +1,46 @@
+# ─── Configurazione e segreti ───────────────────────────────
 .env
-.DS_Store
+.env.*
+!.env.example
+
+# ─── Dati personali ─────────────────────────────────────────
+# Database SQLite (+ file WAL/SHM) e qualsiasi copia di backup
 database/*.sqlite
 database/*.sqlite-*
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.sqlite-wal
+*.sqlite-shm
+*.bak
+/backup/
+/backups/
+# Export scaricati dall'app
+tracktage-*.csv
+tracktage-backup-*.sqlite
+
+# ─── Log ────────────────────────────────────────────────────
 api/log/
-.claude/settings.local.json
+*.log
+
+# ─── Strumenti locali ───────────────────────────────────────
+.claude/
+.idea/
+.vscode/
+*.code-workspace
+.phpunit.result.cache
+.php-cs-fixer.cache
+vendor/
+node_modules/
+
+# ─── File di sistema ────────────────────────────────────────
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~

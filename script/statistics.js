@@ -1,6 +1,6 @@
 let netChart = null, stackChart = null;
 
-const moneyTick = v => new Intl.NumberFormat('it-IT', { notation: 'compact', style: 'currency', currency: base_currency }).format(v);
+const moneyTick = v => new Intl.NumberFormat('it-IT', { notation: 'compact', maximumFractionDigits: 1, style: 'currency', currency: base_currency }).format(v);
 const fmtDate = d => new Date(d + 'T00:00:00').toLocaleDateString('it-IT', { day: '2-digit', month: 'short' });
 
 function load(days) {
@@ -43,12 +43,13 @@ function render({ categories, snapshots }) {
 		type: 'line',
 		data: {
 			labels,
-			datasets: assetCats.map(c => ({
+			datasets: assetCats.map((c, i) => ({
 				label: c.name,
 				data: snapshots.map(s => s.breakdown[c.id] ?? 0),
 				borderColor: c.color,
-				backgroundColor: c.color + '55',
-				fill: true, tension: .3, pointRadius: 0, borderWidth: 1
+				backgroundColor: c.color + '99',
+				// Area impilata: ogni serie riempie fino a quella sotto, non fino a zero
+				fill: i === 0 ? 'origin' : '-1', tension: .3, pointRadius: 0, borderWidth: 1
 			}))
 		},
 		options: {
@@ -57,12 +58,13 @@ function render({ categories, snapshots }) {
 				legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } },
 				tooltip: { callbacks: { label: c => ' ' + c.dataset.label + ': ' + App.money(c.raw) } }
 			},
-			scales: { y: { stacked: true, ticks: { callback: moneyTick } }, x: { ticks: { maxTicksLimit: 6 } } }
+			scales: { y: { stacked: true, beginAtZero: true, ticks: { callback: moneyTick } }, x: { ticks: { maxTicksLimit: 6 } } }
 		}
 	});
 }
 
 $(function () {
+	App.chartTheme();
 	load(365);
 	$('#periodGroup').on('click', 'button', function () {
 		$(this).addClass('active').siblings().removeClass('active');

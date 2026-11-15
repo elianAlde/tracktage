@@ -19,6 +19,12 @@
 		</div>
 	</div>
 
+	<!-- VALORI DA AGGIORNARE -->
+	<div class="alert alert-warning d-none d-flex align-items-center gap-2 py-2 small" id="staleAlert" role="alert">
+		<i class="bi bi-clock-history" style="font-size:18px"></i>
+		<span id="staleText"></span>
+	</div>
+
 	<!-- ALLOCAZIONE -->
 	<div class="card p-3 mb-3" id="allocationCard">
 		<h6 class="fw-semibold mb-3">Allocazione</h6>

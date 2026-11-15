@@ -30,7 +30,7 @@
 				<?php endif; ?>
 			</div>
 			<?php if ($isMarket): ?>
-				<button class="btn btn-light btn-sm" id="btnRefresh" title="Aggiorna quotazioni"><i class="bi bi-arrow-clockwise" style="font-size:18px"></i></button>
+				<button class="btn btn-soft btn-sm" id="btnRefresh" title="Aggiorna quotazioni"><i class="bi bi-arrow-clockwise" style="font-size:18px"></i></button>
 			<?php endif; ?>
 		</div>
 		<?php if ($isMarket): ?>
@@ -52,6 +52,9 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
 			</div>
 			<div class="modal-body">
+				<div class="alert alert-warning small py-2 d-flex gap-2 d-none" id="staleHint">
+					<i class="bi bi-clock-history" style="font-size:16px"></i><span></span>
+				</div>
 				<form id="formAsset" novalidate autocomplete="off">
 					<input type="hidden" name="id" id="assetId">
 					<input type="hidden" name="category_id" value="<?= (int)$category['id'] ?>">
@@ -73,7 +76,7 @@
 								<input type="text" inputmode="decimal" class="form-control" id="avg_cost" name="avg_cost" placeholder="<?= BASE_CURRENCY ?> per quota">
 							</div>
 						</div>
-						<div class="alert alert-light small py-2 d-none" id="previewValue"></div>
+						<div class="alert alert-secondary small py-2 d-none" id="previewValue"></div>
 						<div class="mb-3">
 							<label for="name" class="form-label">Nome <span class="text-muted small">(opz.)</span></label>
 							<input type="text" class="form-control" id="name" name="name" maxlength="120" placeholder="Compilato in automatico">

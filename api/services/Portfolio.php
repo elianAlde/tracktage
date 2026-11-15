@@ -38,6 +38,8 @@ class Portfolio {
         $asset['gain_pct'] = null;
         $asset['quote'] = null;
         $asset['price_error'] = false;
+        $asset['stale'] = false;
+        $asset['months_since_update'] = null;
 
         if ($category['kind'] === 'market' && !empty($asset['ticker'])) {
             $quote = $this->prices->quote($asset['ticker'], $forceRefresh);
@@ -56,6 +58,11 @@ class Portfolio {
             }
         } else {
             $asset['current_value'] = (float)($asset['value'] ?? 0);
+            // I valori manuali non si aggiornano da soli: segnala quelli vecchi
+            $updated = new DateTimeImmutable($asset['updated_at'], new DateTimeZone('UTC'));
+            $diff = $updated->diff(new DateTimeImmutable('now', new DateTimeZone('UTC')));
+            $asset['months_since_update'] = $diff->y * 12 + $diff->m;
+            $asset['stale'] = $asset['months_since_update'] >= STALE_MONTHS;
         }
         return $asset;
     }
@@ -78,6 +85,7 @@ class Portfolio {
             $c['gain'] = $gains ? array_sum($gains) : null;
             $c['cost'] = $costs ? array_sum($costs) : null;
             $c['price_errors'] = count(array_filter($assets, fn($a) => $a['price_error']));
+            $c['stale_count'] = count(array_filter($assets, fn($a) => $a['stale']));
             $categories[] = $c;
 
             if ($c['is_liability']) $totalLiabilities += $total; else $totalAssets += $total;
@@ -89,6 +97,8 @@ class Portfolio {
 
         return [
             'currency'          => BASE_CURRENCY,
+            'stale_months'      => STALE_MONTHS,
+            'stale_total'       => array_sum(array_column($categories, 'stale_count')),
             'total_assets'      => $totalAssets,
             'total_liabilities' => $totalLiabilities,
             'net_worth'         => $netWorth,

@@ -19,7 +19,7 @@
 <div class="container app-container py-3">
 	<!-- PROFILO -->
 	<div class="card p-3 mb-3 d-flex flex-row align-items-center gap-3">
-		<div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+		<div class="rounded-circle bg-body-tertiary d-inline-flex align-items-center justify-content-center" style="width:56px;height:56px;">
 			<i class="bi bi-person fs-3 text-secondary"></i>
 		</div>
 		<div class="min-w-0">
@@ -35,6 +35,19 @@
 	</div>
 	<div class="card overflow-hidden mb-3" id="categoriesList"></div>
 
+	<!-- ASPETTO -->
+	<h6 class="fw-semibold mb-2 px-1">Aspetto</h6>
+	<div class="card p-2 mb-3">
+		<div class="btn-group w-100" role="group" id="themeGroup">
+			<input type="radio" class="btn-check" name="theme" id="themeAuto" value="auto">
+			<label class="btn btn-outline-primary btn-sm" for="themeAuto"><i class="bi bi-circle-half" style="font-size:14px"></i> Automatico</label>
+			<input type="radio" class="btn-check" name="theme" id="themeLight" value="light">
+			<label class="btn btn-outline-primary btn-sm" for="themeLight"><i class="bi bi-sun" style="font-size:14px"></i> Chiaro</label>
+			<input type="radio" class="btn-check" name="theme" id="themeDark" value="dark">
+			<label class="btn btn-outline-primary btn-sm" for="themeDark"><i class="bi bi-moon-stars" style="font-size:14px"></i> Scuro</label>
+		</div>
+	</div>
+
 	<!-- ACCOUNT -->
 	<div class="card overflow-hidden mb-3">
 		<a href="#" class="list-row" data-bs-toggle="modal" data-bs-target="#modalPassword">
@@ -42,6 +55,26 @@
 		</a>
 		<a href="#" class="list-row" id="addToHomeBtn">
 			<i class="bi bi-plus-square" style="font-size:20px"></i><span class="flex-grow-1">Aggiungi a schermata home</span><i class="bi bi-chevron-right text-muted" style="font-size:14px"></i>
+		</a>
+	</div>
+
+	<!-- BACKUP -->
+	<h6 class="fw-semibold mb-2 px-1">Backup</h6>
+	<div class="card overflow-hidden mb-3">
+		<a href="<?= BASE_URL ?>api/endpoint/backup/assets_csv.php" class="list-row" download>
+			<i class="bi bi-filetype-csv" style="font-size:20px"></i>
+			<div class="flex-grow-1"><div>Voci del patrimonio</div><div class="meta">CSV con valori attuali, apribile in Excel</div></div>
+			<i class="bi bi-download text-muted" style="font-size:16px"></i>
+		</a>
+		<a href="<?= BASE_URL ?>api/endpoint/backup/history_csv.php" class="list-row" download>
+			<i class="bi bi-filetype-csv" style="font-size:20px"></i>
+			<div class="flex-grow-1"><div>Storico patrimonio</div><div class="meta">CSV con una riga per ogni giorno salvato</div></div>
+			<i class="bi bi-download text-muted" style="font-size:16px"></i>
+		</a>
+		<a href="<?= BASE_URL ?>api/endpoint/backup/database.php" class="list-row" download>
+			<i class="bi bi-database-down" style="font-size:20px"></i>
+			<div class="flex-grow-1"><div>Database completo</div><div class="meta">File .sqlite, per ripristinare tutto</div></div>
+			<i class="bi bi-download text-muted" style="font-size:16px"></i>
 		</a>
 	</div>
 
@@ -151,7 +184,7 @@
 					<li class="mb-2">Scorri e seleziona <strong>Aggiungi a Home</strong> <i class="bi bi-plus-square fs-5 mx-1"></i></li>
 					<li>Premi <strong>Aggiungi</strong></li>
 				</ol>
-				<div class="alert alert-light mt-3 small">Funziona solo da Safari</div>
+				<div class="alert alert-secondary mt-3 small">Funziona solo da Safari</div>
 			</div>
 		</div>
 	</div>

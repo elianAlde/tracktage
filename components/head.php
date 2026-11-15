@@ -5,6 +5,23 @@
 			<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 			<meta name="csrf-token" content="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
 			<meta name="theme-color" content="#ffffff">
+			<!-- Tema: applicato prima del rendering per evitare il lampo bianco -->
+			<script>
+				(function () {
+					var pref = 'auto';
+					try { pref = localStorage.getItem('theme') || 'auto'; } catch (e) {}
+					var mq = window.matchMedia('(prefers-color-scheme: dark)');
+					window.applyTheme = function (p) {
+						pref = p || pref;
+						var dark = pref === 'dark' || (pref === 'auto' && mq.matches);
+						document.documentElement.setAttribute('data-bs-theme', dark ? 'dark' : 'light');
+						var meta = document.querySelector('meta[name="theme-color"]');
+						if (meta) meta.setAttribute('content', dark ? '#1a1d23' : '#ffffff');
+					};
+					window.applyTheme();
+					mq.addEventListener('change', function () { window.applyTheme(); });
+				})();
+			</script>
 			<meta name="robots" content="noindex, nofollow">
 			<title>Tracktage</title>
 			<link rel="icon" type="image/svg+xml" href="<?= BASE_URL ?>assets/logos/icon.svg">
